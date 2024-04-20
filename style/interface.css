@@ -1,0 +1,48 @@
+.board,
+.header,
+.flow,
+.result {
+  display: flex;
+}
+
+.board {
+  background: var(--board-bg);
+  flex-grow: 1;
+  height: 100%;
+  flex-direction: column;
+  color: white;
+  font-size: .75rem;
+}
+
+.header {
+  padding: .75rem 1rem;
+  flex-shrink: 0;
+  width: 100%;
+  border-bottom: 1px solid #333154;
+}
+
+.flow {
+  height: 65%;
+  flex-shrink: 0;
+  min-height: 150px;
+  resize: vertical;
+  position: relative;
+  overflow: auto;
+}
+
+.result {
+  flex-grow: 1;
+  height: 100%;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.result-head {
+  border-top: 1px solid #333154;
+  border-bottom: 1px solid #333154;
+}
+
+.result-table {
+  height: 100%;
+}

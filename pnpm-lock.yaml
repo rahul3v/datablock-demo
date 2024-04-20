@@ -8,6 +8,12 @@ dependencies:
   '@reduxjs/toolkit':
     specifier: ^2.2.3
     version: 2.2.3(react-redux@9.1.1)(react@18.2.0)
+  lucide-react:
+    specifier: ^0.372.0
+    version: 0.372.0(react@18.2.0)
+  nanoid:
+    specifier: ^5.0.7
+    version: 5.0.7
   next:
     specifier: 14.2.1
     version: 14.2.1(react-dom@18.2.0)(react@18.2.0)
@@ -23,6 +29,9 @@ dependencies:
   reactflow:
     specifier: ^11.11.1
     version: 11.11.1(@types/react@18.2.79)(react-dom@18.2.0)(react@18.2.0)
+  zustand:
+    specifier: ^4.5.2
+    version: 4.5.2(@types/react@18.2.79)(react@18.2.0)
 
 devDependencies:
   '@types/node':
@@ -2246,6 +2255,14 @@ packages:
       yallist: 4.0.0
     dev: true
 
+  /lucide-react@0.372.0(react@18.2.0):
+    resolution: {integrity: sha512-0cKdqmilHXWUwWAWnf6CrrjHD8YaqPMtLrmEHXolZusNTr9epULCsiJwIOHk2q1yFxdEwd96D4zShlAj67UJdA==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
@@ -2308,6 +2325,12 @@ packages:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /nanoid@5.0.7:
+    resolution: {integrity: sha512-oLxFY2gd2IqnjcYyOXD8XGCftpGtZP2AbHbOkthDkvRywH5ayNtPVy9YlOPcHckXzbLTCHpkb7FB+yuxKV13pQ==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+    dev: false
 
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
