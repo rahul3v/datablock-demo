@@ -3,7 +3,6 @@
 
 import React, { useCallback, useRef } from 'react';
 import ReactFlow, {
-  Panel,
   addEdge,
   MiniMap,
   Controls,
@@ -23,8 +22,7 @@ import '@/style/overview.css';
 import '@/style/interface.css';
 import { setLocalStorage, exportCsvData, exportJsonData } from '@/lib/data-block.lib';
 import { MoonStar, Download } from 'lucide-react'
-import { Workspace, WORKSPACE } from '@/components/Workspace';
-import { Blocks } from '@/components/Blocks';
+import { Table, Blocks, Workspace, WORKSPACE } from '@/components'
 
 const nodeTypes = {
   custom: CustomNode,
@@ -146,42 +144,3 @@ const OverviewFlow = () => {
 };
 
 export default OverviewFlow;
-const DummyData = [{
-  A: 1,
-  B: 2,
-  C: 4,
-},
-{
-  A: 111,
-  B: 211,
-  C: 411,
-}]
-
-function Table() {
-  const keys = Object.keys(DummyData[0])
-  const rows = DummyData
-
-  return <table className='text-left border border-collapse px-4'>
-    <thead>
-      <tr>
-        {
-          keys.map(key => {
-            return <th className='w-10' key={key}>{key}</th>
-          })
-        }
-      </tr>
-    </thead>
-    <tbody>
-      {
-        rows.map((row, i) => {
-          return <tr key={i}>
-            {keys.map(key => {
-              return <td key={key}>{row[key]}</td>
-            })
-            }
-          </tr>
-        })
-      }
-    </tbody>
-  </table>
-}

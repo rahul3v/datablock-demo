@@ -13,13 +13,13 @@ export type DataFileFormat = {
 export function exportJsonData(data: DataFileFormat, filename: string) {
   const jsonData = JSON.stringify(data);
   const blob = new Blob([jsonData], { type: 'application/json' });
-  downloadFile(blob, `data-${filename}-${new Date()}.json`)
+  downloadFile(blob, `data-${filename}-${Date.now()}.json`)
 }
 
 export function exportCsvData(data: object[], filename: string) {
   const csvData = convertToCSV(data);
   const blob = new Blob([csvData], { type: 'text/csv' });
-  downloadFile(blob, `data-${filename}-${new Date()}.csv`)
+  downloadFile(blob, `data-${filename}-${Date.now()}.csv`)
 }
 
 export function downloadFile(blob: Blob, name: string) {
