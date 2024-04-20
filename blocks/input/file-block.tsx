@@ -37,6 +37,7 @@ function FileBlock({ id }: { id: string }) {
               }
               if (obj === null) { alert("wronng file format"); return }
             } catch (e) {
+              if(ref.current)ref.current.innerHTML = ""
               alert("wronng file format"); return
             }
           }

@@ -21,8 +21,11 @@ import FilterBlock from '@/blocks/transform/filter-block';
 import 'reactflow/dist/style.css';
 import '@/style/overview.css';
 import '@/style/interface.css';
-import { DataFileFormat, setLocalStorage, exportCsvData, exportJsonData } from '@/lib/data-block.lib';
+import { setLocalStorage, exportCsvData, exportJsonData } from '@/lib/data-block.lib';
 import { MoonStar, Download } from 'lucide-react'
+import { Workspace, WORKSPACE } from '@/components/Workspace';
+import { Blocks } from '@/components/Blocks';
+
 const nodeTypes = {
   custom: CustomNode,
   filepicker: FileBlock,
@@ -34,12 +37,8 @@ const minimapStyle = {
   width: 150
 };
 
-const DATA: DataFileFormat = {
-  name: "",
-  creationDate: "2022-03-19T06:38:18.468Z",
-  updateDate: "2022-03-19T06:38:18.468Z",
-  datablock: [{ a: 23, b: 45 }]
-}
+const DATA = [{ a: 23, b: 45 }]
+
 
 const buttonStyle = `px-3 py-1 rounded-xl border-violet-950 z-10 bg-indigo-800 cursor-pointer opacity-80 duration-200 hover:opacity-100 shadow`
 
@@ -83,10 +82,10 @@ const OverviewFlow = () => {
   return (<div className='board'>
     <div className='header justify-between'>
       <div className='flex gap-2'>
-        <div><button>Workspace</button></div>
+        <div><Workspace /></div>
         <div>
           <button onClick={() => {
-            setLocalStorage(DATA)
+            setLocalStorage(WORKSPACE)
           }}>Save</button>
         </div>
         <div>
@@ -99,7 +98,7 @@ const OverviewFlow = () => {
       </div>
     </div>
     <div className='flow'>
-      <div className='absolute top-4 left-4 px-2 py-1 rounded-xl border-violet-950 z-10 bg-indigo-800 cursor-pointer'>+ block</div>
+      <Blocks />
       <ReactFlow
         nodes={nodes}
         edges={edgesWithUpdatedTypes}
@@ -113,14 +112,6 @@ const OverviewFlow = () => {
         proOptions={{ hideAttribution: true }}
         nodeTypes={nodeTypes}
       >
-        <Panel className={'space-x-4'} position="top-right">
-          <button className={buttonStyle}>
-            Add File
-          </button>
-          <button className={buttonStyle}>
-            Add Filter
-          </button>
-        </Panel>
         <MiniMap style={minimapStyle} zoomable pannable />
         <Controls />
         <Background color="#aaa" gap={16} />

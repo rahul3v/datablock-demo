@@ -4,7 +4,10 @@ export type DataFileFormat = {
   name: string,
   creationDate: string,
   updateDate: string,
-  datablock: Data
+  datablock: {
+    nodes: [],
+    edges: []
+  }
 }
 
 export function exportJsonData(data: DataFileFormat) {
@@ -14,11 +17,10 @@ export function exportJsonData(data: DataFileFormat) {
   downloadFile(blob, `data-${name}-${updateDate}.json`)
 }
 
-export function exportCsvData(data: DataFileFormat) {
-  const { name, updateDate, datablock } = data
-  const csvData = convertToCSV(datablock);
+export function exportCsvData(data: object[]) {
+  const csvData = convertToCSV(data);
   const blob = new Blob([csvData], { type: 'text/csv' });
-  downloadFile(blob, `data-${name}-${updateDate}.csv`)
+  downloadFile(blob, `data-${name}-${new Date()}.csv`)
 }
 
 export function downloadFile(blob: Blob, name: string) {
@@ -38,13 +40,13 @@ export function convertToCSV(data: Data) {
   return headers + '\n' + rows;
 }
 
-export function setLocalStorage(data: DataFileFormat) {
+export function setLocalStorage(data: DataFileFormat[]) {
   localStorage.setItem(`workspace`, JSON.stringify(data))
   alert('Sucessfully Saved locally')
 }
 
-export function getLocalStorageData(): DataFileFormat | null {
-  const data = localStorage.getItem(`workspace`)
+export function getLocalStorageData(key = 'workspace'): DataFileFormat[] | null {
+  const data = localStorage.getItem(key)
   return data ? JSON.parse(data) : null
 }
 
