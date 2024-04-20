@@ -38,7 +38,7 @@ const minimapStyle = {
 };
 
 const DATA = [{ a: 23, b: 45 }]
-
+const SELECTED = 0
 
 const buttonStyle = `px-3 py-1 rounded-xl border-violet-950 z-10 bg-indigo-800 cursor-pointer opacity-80 duration-200 hover:opacity-100 shadow`
 
@@ -93,8 +93,18 @@ const OverviewFlow = () => {
         </div>
       </div>
       <div contentEditable className='focus:outline-none focus:underline' dangerouslySetInnerHTML={{ __html: "data flow" }}></div>
-      <div className='flex gap-2 cursor-pointer'>
-        <MoonStar size={20} />
+      <div className='flex gap-4'>
+        <div className='flex gap-1 cursor-pointer' onClick={() => {
+          exportJsonData(WORKSPACE[SELECTED], 'workspace')
+        }}>
+          <div>
+            <Download size={16} />
+          </div>
+          <div>Export</div>
+        </div>
+        <div className='cursor-pointer'>
+          <MoonStar size={16} />
+        </div>
       </div>
     </div>
     <div className='flow'>
@@ -121,10 +131,10 @@ const OverviewFlow = () => {
       <div className='result-head flex gap-2 px-2 py-2 items-center'>
         <div> Export : </div>
         <button className={buttonStyle} onClick={() => {
-          exportCsvData(DATA)
+          exportCsvData(DATA, 'data')
         }}>CSV</button>
         <button className={buttonStyle} onClick={() => {
-          exportJsonData(DATA)
+          exportJsonData(DATA, 'data')
         }}>JSON</button>
       </div>
       <div className='result-table p-2'>

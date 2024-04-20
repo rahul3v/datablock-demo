@@ -21,7 +21,7 @@ export function Workspace() {
   return <Dialog.Root>
     <Dialog.Trigger>
       <button>
-        workspaces
+        Workspaces
       </button>
     </Dialog.Trigger>
     <Dialog.Portal>

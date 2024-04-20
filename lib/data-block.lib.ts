@@ -10,17 +10,16 @@ export type DataFileFormat = {
   }
 }
 
-export function exportJsonData(data: DataFileFormat) {
-  const { name, updateDate } = data
+export function exportJsonData(data: DataFileFormat, filename: string) {
   const jsonData = JSON.stringify(data);
   const blob = new Blob([jsonData], { type: 'application/json' });
-  downloadFile(blob, `data-${name}-${updateDate}.json`)
+  downloadFile(blob, `data-${filename}-${new Date()}.json`)
 }
 
-export function exportCsvData(data: object[]) {
+export function exportCsvData(data: object[], filename: string) {
   const csvData = convertToCSV(data);
   const blob = new Blob([csvData], { type: 'text/csv' });
-  downloadFile(blob, `data-${name}-${new Date()}.csv`)
+  downloadFile(blob, `data-${filename}-${new Date()}.csv`)
 }
 
 export function downloadFile(blob: Blob, name: string) {
