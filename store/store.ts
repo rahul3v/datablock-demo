@@ -2,6 +2,7 @@ import { Node, Connection, OnConnect, Edge, applyNodeChanges, applyEdgeChanges, 
 import { nanoid } from 'nanoid';
 import { create } from 'zustand';
 import { nodes, edges } from './data'
+import { getLocalStorageData, setLocalStorage } from '@/lib/data-block.lib';
 
 export type NodeType = 'filter' | 'filepicker'
 
@@ -9,9 +10,10 @@ export type WorkspaceType = {
   name: string,
   creationDate: number,
   updateDate: number,
-  nodes: [],
-  edges: []
+  nodes: Node[],
+  edges: Edge[]
 }
+export const WORKSPACE_KEY = 'workspace'
 
 export type RFState = {
   nodes: Node[];
@@ -19,7 +21,9 @@ export type RFState = {
   name: string;
   createdDate: number;
   updatedDate: number;
+  isNew: boolean;
   darkmode: boolean;
+  selectedWorkspace: number;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
@@ -27,7 +31,8 @@ export type RFState = {
   setEdges: (edges: Edge[]) => void;
   setName: (name: string) => void;
   setNewWorkspace: () => void;
-  loadNewWorkspace: (workspace: WorkspaceType) => void;
+  saveWorkspace: () => void;
+  loadNewWorkspace: (workspace: WorkspaceType, id: number) => void;
   createNode: (type: NodeType) => void;
   addEdge: (data: Edge) => void;
   deleteNode: (id: string) => void;
@@ -41,6 +46,8 @@ export const useStore = create<RFState>((set, get) => ({
   updatedDate: Date.now(),
   name: 'data-flow',
   darkmode: true,
+  isNew: false,
+  selectedWorkspace: 0,
 
   setNewWorkspace() {
     set({
@@ -49,12 +56,46 @@ export const useStore = create<RFState>((set, get) => ({
       edges: [],
       createdDate: Date.now(),
       updatedDate: Date.now(),
+      isNew: true,
     })
   },
 
-  loadNewWorkspace(workspace: WorkspaceType) {
+  saveWorkspace() {
+    const data: WorkspaceType = {
+      name: this.name,
+      nodes: this.nodes,
+      edges: this.edges,
+      creationDate: this.createdDate,
+      updateDate: Date.now()
+    }
+    const workspaces = getLocalStorageData(WORKSPACE_KEY)
+    // if workspace is new
+    if (this.isNew) {
+      
+      // check if workspace already exists
+      if (workspaces) {
+        workspaces.push(data)
+        setLocalStorage(workspaces)
+      } else {
+        setLocalStorage([data])
+      }
+    } else {
+      if (workspaces) {
+        workspaces[this.selectedWorkspace] = data
+        setLocalStorage(workspaces)
+      } else {
+        setLocalStorage([data])
+      }
+    }
+
+    set({ isNew: false })
+  },
+
+  loadNewWorkspace(workspace, id) {
     set({
-      ...workspace
+      ...workspace,
+      isNew: false,
+      selectedWorkspace: id
     })
   },
   setName(name: string) {

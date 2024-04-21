@@ -1,11 +1,12 @@
-import { setLocalStorage } from '@/lib/data-block.lib'
-import { type WorkspaceType } from '@/store/store'
+import { useStore } from '@/store/store'
 import { Save } from 'lucide-react'
 import React from 'react'
 
-export default function SaveFile({ data }: { data: WorkspaceType[] }) {
+export default function SaveFile() {
+  const store = useStore()
   return (<div className="flex gap-1 cursor-pointer" onClick={() => {
-    setLocalStorage(data)
+    store.saveWorkspace()
+    alert('Sucessfully Saved locally')
   }}>
     <Save size={16} />
     <div>Save</div>

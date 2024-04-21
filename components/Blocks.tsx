@@ -41,6 +41,17 @@ const BLOCKS = [
         output: 'Dataset',
       }
     ]
+  },
+  {
+    label: 'output',
+    types: [
+      {
+        label: 'export',
+        detail: 'Lets you export data as csv, json or geojson.',
+        input: 'Dataset, Geojson, Topojson, Object',
+        output: '-',
+      },
+    ]
   }
 ]
 
@@ -53,7 +64,7 @@ export function Blocks() {
     </Dialog.Trigger>
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black/75 data-[state=open]:animate-overlayShow fixed inset-0 z-20" />
-      <Dialog.Content className="z-20 text-white data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[600px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-[#222138] p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+      <Dialog.Content className="z-20 text-white data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[600px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-[#222138] p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none overflow-auto">
         <div className='flex flex-col gap-4'>
           <div className='font-bold'>Block Library</div>
           {BLOCKS.map((block, i) => {

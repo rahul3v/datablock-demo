@@ -33,7 +33,6 @@ export function convertToCSV(data: Data) {
 
 export function setLocalStorage(data: WorkspaceType[]) {
   localStorage.setItem(`workspace`, JSON.stringify(data))
-  alert('Sucessfully Saved locally')
 }
 
 export function getLocalStorageData(key = 'workspace'): WorkspaceType[] | null {

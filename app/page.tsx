@@ -16,8 +16,8 @@ import 'reactflow/dist/style.css';
 import '@/style/overview.css';
 import '@/style/interface.css';
 import { exportCsvData, exportJsonData } from '@/lib/data-block.lib';
-import { MoonStar, Download } from 'lucide-react'
-import { Table, Blocks, Workspace, WORKSPACE } from '@/components'
+import { MoonStar } from 'lucide-react'
+import { Table, Blocks, Workspace } from '@/components'
 
 import { useShallow } from 'zustand/react/shallow';
 import { type RFState, useStore } from '@/store/store';
@@ -25,6 +25,7 @@ import { FileName } from '@/components/FileName';
 import NewFile from '@/components/NewFile';
 import SaveFile from '@/components/SaveFile';
 import { HistoryUi } from '@/components/appui/HistoryUi';
+import ExportFile from '@/components/ExportFile';
 
 const nodeTypes = {
   custom: CustomNode,
@@ -38,7 +39,6 @@ const minimapStyle = {
 };
 
 const DATA = [{ a: 23, b: 45 }]
-const SELECTED = 0
 
 const buttonStyle = `px-3 py-1 rounded-xl border-violet-950 z-10 bg-indigo-800 cursor-pointer opacity-80 duration-200 hover:opacity-100 shadow`
 
@@ -63,7 +63,7 @@ const OverviewFlow = () => {
       <div className='flex gap-4'>
         <div><Workspace /></div>
         <div>
-          <SaveFile data={WORKSPACE} />
+          <SaveFile />
         </div>
         <div>
           <NewFile />
@@ -71,14 +71,7 @@ const OverviewFlow = () => {
       </div>
       <FileName />
       <div className='flex gap-4'>
-        <div className='flex gap-1 cursor-pointer' onClick={() => {
-          exportJsonData(WORKSPACE[SELECTED], 'workspace')
-        }}>
-          <div>
-            <Download size={16} />
-          </div>
-          <div>Export</div>
-        </div>
+        <ExportFile />
         <div className='cursor-pointer'>
           <MoonStar size={16} />
         </div>

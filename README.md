@@ -1,10 +1,10 @@
-# Data-Block Demo
+# Datablock Demo
 
 <p align="center">
   <img alt="Sample View" src="screenshots/app.png" width="80%" />
 </p>
 
-This is a Data-Block based project based on `React-flow`, check [Live Demo](https://datablock-demo.vercel.app/).
+This is a DataBlock based project based on `React-flow`, check [Live Demo](https://datablock-demo.vercel.app/).
 
 ## Getting Started
 
