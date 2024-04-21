@@ -20,10 +20,11 @@ import { MoonStar, Download } from 'lucide-react'
 import { Table, Blocks, Workspace, WORKSPACE } from '@/components'
 
 import { useShallow } from 'zustand/react/shallow';
-import { RFState, useStore } from '@/store/store';
+import { type RFState, useStore } from '@/store/store';
 import { FileName } from '@/components/FileName';
 import NewFile from '@/components/NewFile';
 import SaveFile from '@/components/SaveFile';
+import { HistoryUi } from '@/components/appui/HistoryUi';
 
 const nodeTypes = {
   custom: CustomNode,
@@ -102,6 +103,9 @@ const OverviewFlow = () => {
           <button className={buttonStyle} onClick={store.addFilter}>
             Add Filter
           </button>
+        </Panel>
+        <Panel position="bottom-left" className={'space-x-4 translate-x-12'} >
+          <HistoryUi />
         </Panel>
         <MiniMap style={minimapStyle} zoomable pannable />
         <Controls />
