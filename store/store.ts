@@ -24,6 +24,7 @@ export type RFState = {
   onEdgesChange: OnEdgesChange;
   setNodes: (nodes: Node[]) => void;
   setEdges: (edges: Edge[]) => void;
+  setName: (name: string) => void;
   setNewWorkspace: () => void;
   loadNewWorkspace: (workspace: WorkspaceType) => void;
   createNode: (type: NodeType) => void;

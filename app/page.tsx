@@ -22,6 +22,7 @@ import { Table, Blocks, Workspace, WORKSPACE } from '@/components'
 
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@/store/store';
+import { FileName } from '@/components/FileName';
 
 const nodeTypes = {
   custom: CustomNode,
@@ -66,7 +67,7 @@ const OverviewFlow = () => {
           <button>New</button>
         </div>
       </div>
-      <div contentEditable className='focus:outline-none focus:underline' dangerouslySetInnerHTML={{ __html: store.name }} onInput={(e) => store.setName(e.target.textContent)}></div>
+      <FileName/>
       <div className='flex gap-4'>
         <div className='flex gap-1 cursor-pointer' onClick={() => {
           exportJsonData(WORKSPACE[SELECTED], 'workspace')
