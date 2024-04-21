@@ -1,16 +1,15 @@
 import { getLocalStorageData } from '@/lib/data-block.lib';
+import { type WorkspaceType } from '@/store/store';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Trash, X } from 'lucide-react';
 
-export const WORKSPACE = [
+export const WORKSPACE: WorkspaceType[] = [
   {
     name: "data-block",
-    creationDate: "2022-03-19T06:38:18.468Z",
-    updateDate: "2022-03-19T06:38:18.468Z",
-    datablock: {
-      nodes: [],
-      edges: []
-    }
+    creationDate: new Date("2022-03-19T06:38:18.468Z").getTime(),
+    updateDate: new Date("2022-03-19T06:38:18.468Z").getTime(),
+    nodes: [],
+    edges: []
   }
 ]
 

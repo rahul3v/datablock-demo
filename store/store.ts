@@ -5,14 +5,27 @@ import { nodes, edges } from './data'
 
 export type NodeType = 'filter' | 'filepicker'
 
+export type WorkspaceType = {
+  name: string,
+  creationDate: number,
+  updateDate: number,
+  nodes: [],
+  edges: []
+}
+
 export type RFState = {
-  nodes: Node<any>[];
+  nodes: Node[];
   edges: Edge[];
   name: string;
+  createdDate: number;
+  updatedDate: number;
+  darkmode: boolean;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   setNodes: (nodes: Node[]) => void;
   setEdges: (edges: Edge[]) => void;
+  setNewWorkspace: () => void;
+  loadNewWorkspace: (workspace: WorkspaceType) => void;
   createNode: (type: NodeType) => void;
   addEdge: (data: Edge) => void;
   deleteNode: (id: string) => void;
@@ -22,8 +35,26 @@ export type RFState = {
 export const useStore = create<RFState>((set, get) => ({
   nodes: nodes,
   edges: edges,
+  createdDate: Date.now(),
+  updatedDate: Date.now(),
   name: 'data-flow',
+  darkmode: true,
 
+  setNewWorkspace() {
+    set({
+      name: 'data-flow',
+      nodes: [],
+      edges: [],
+      createdDate: Date.now(),
+      updatedDate: Date.now(),
+    })
+  },
+
+  loadNewWorkspace(workspace: WorkspaceType) {
+    set({
+      ...workspace
+    })
+  },
   setName(name: string) {
     set({ name })
   },

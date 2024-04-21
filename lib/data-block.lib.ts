@@ -1,16 +1,8 @@
+import { WorkspaceType } from "@/store/store";
 
 export type Data = object[]
-export type DataFileFormat = {
-  name: string,
-  creationDate: string,
-  updateDate: string,
-  datablock: {
-    nodes: [],
-    edges: []
-  }
-}
 
-export function exportJsonData(data: DataFileFormat, filename: string) {
+export function exportJsonData(data: WorkspaceType, filename: string) {
   const jsonData = JSON.stringify(data);
   const blob = new Blob([jsonData], { type: 'application/json' });
   downloadFile(blob, `data-${filename}-${Date.now()}.json`)
@@ -39,12 +31,12 @@ export function convertToCSV(data: Data) {
   return headers + '\n' + rows;
 }
 
-export function setLocalStorage(data: DataFileFormat[]) {
+export function setLocalStorage(data: WorkspaceType[]) {
   localStorage.setItem(`workspace`, JSON.stringify(data))
   alert('Sucessfully Saved locally')
 }
 
-export function getLocalStorageData(key = 'workspace'): DataFileFormat[] | null {
+export function getLocalStorageData(key = 'workspace'): WorkspaceType[] | null {
   const data = localStorage.getItem(key)
   return data ? JSON.parse(data) : null
 }
