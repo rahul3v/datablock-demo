@@ -7,8 +7,10 @@ import { useState } from 'react';
 
 export function Workspace() {
   const [workspaces, setWorkspaces] = useState<WorkspaceType[] | null>()
+  const [open, setOpen] = useState(false)
+
   const store = useStore()
-  return <Dialog.Root>
+  return <Dialog.Root open={open} onOpenChange={setOpen}>
     <Dialog.Trigger>
       <div className="flex gap-1 cursor-pointer" onClick={() => {
         const workspaces = getLocalStorageData('workspace')
@@ -30,9 +32,10 @@ export function Workspace() {
           </div>
           {workspaces && workspaces.map((workspace, i) => {
             const { name, creationDate, updateDate } = workspace
-            return <div key={i} className='workspace grid grid-cols-4 gap-4 shadow-md px-2 py-2 rounded-md bg-[#333154] text-[12px]'>
-              <div className='font-bold cursor-pointer ' onClick={() => {
+            return <div key={i} className={`workspace grid grid-cols-4 gap-4 shadow-md px-2 py-2 rounded-md text-[12px] ${store.selectedWorkspace == i?'bg-[#504cc6] ':'bg-[#333154]'}`}>
+              <div className='font-bold cursor-pointer' onClick={() => {
                 store.loadNewWorkspace(workspaces[i], i)
+                setOpen(false)
               }}>{name}</div>
               <div className='opacity-85'>{String(new Date(creationDate).toLocaleString())}</div>
               <div className='opacity-85'>{String(new Date(updateDate).toLocaleString())}</div>
