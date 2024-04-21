@@ -4,7 +4,7 @@ import { create } from 'zustand';
 import { nodes, edges } from './data'
 import { getLocalStorageData, setLocalStorage } from '@/lib/data-block.lib';
 
-export type NodeType = 'filter' | 'filepicker'
+export type NodeType = 'filter' | 'filepicker' | 'exportfile'
 
 export type WorkspaceType = {
   name: string,
@@ -71,7 +71,7 @@ export const useStore = create<RFState>((set, get) => ({
     const workspaces = getLocalStorageData(WORKSPACE_KEY)
     // if workspace is new
     if (this.isNew) {
-      
+
       // check if workspace already exists
       if (workspaces) {
         workspaces.push(data)
@@ -114,34 +114,38 @@ export const useStore = create<RFState>((set, get) => ({
   },
   createNode(type) {
     const id = nanoid();
-
+    const position = { x: -240, y: 400 };
+    let data = {}
     switch (type) {
       case 'filter': {
-        const data = {
+        data = {
           selects: {
             'handle-0': 'smoothstep',
             'handle-1': 'smoothstep',
           },
         };
-        const position = { x: -240, y: 400 };
-        set({ nodes: [...get().nodes, { id, type, data, position }] });
-
         break;
       }
       case 'filepicker': {
-        const data = {
+        data = {
           selects: {
             'handle-0': 'smoothstep',
             'handle-1': 'smoothstep',
           },
         };
-        const position = { x: -140, y: 400 };
-        set({ nodes: [...get().nodes, { id, type, data, position }] });
+        break;
+      }
+      case 'exportfile': {
+        data = {
+          selects: {
+            'handle-0': 'smoothstep',
+          },
+        };
 
         break;
       }
-
     }
+    set({ nodes: [...get().nodes, { id, type, data, position }] });
   },
   onNodesChange(changes) {
     set({

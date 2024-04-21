@@ -11,6 +11,7 @@ import ReactFlow, {
 import CustomNode from '@/blocks/nodes/CustomNode';
 import FileBlock from '@/blocks/input/file-block';
 import FilterBlock from '@/blocks/transform/filter-block';
+import ExportBlock from '@/blocks/output/export-block';
 
 import 'reactflow/dist/style.css';
 import '@/style/overview.css';
@@ -30,7 +31,8 @@ import ExportFile from '@/components/ExportFile';
 const nodeTypes = {
   custom: CustomNode,
   filepicker: FileBlock,
-  filter: FilterBlock
+  filter: FilterBlock,
+  exportfile: ExportBlock,
 };
 
 const minimapStyle = {
@@ -52,7 +54,8 @@ const selector = (store: RFState) => ({
   addEdge: store.addEdge,
   setName: store.setName,
   addFilter: () => store.createNode('filter'),
-  addFile: () => store.createNode('filepicker')
+  addFile: () => store.createNode('filepicker'),
+  addExportFile: () => store.createNode('exportfile')
 });
 
 const OverviewFlow = () => {
@@ -95,6 +98,9 @@ const OverviewFlow = () => {
           </button>
           <button className={buttonStyle} onClick={store.addFilter}>
             Add Filter
+          </button>
+          <button className={buttonStyle} onClick={store.addExportFile}>
+            Add Export
           </button>
         </Panel>
         <Panel position="bottom-left" className={'space-x-4 translate-x-12'} >
