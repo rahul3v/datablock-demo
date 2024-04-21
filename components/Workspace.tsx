@@ -23,7 +23,10 @@ export function Workspace() {
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black/75 data-[state=open]:animate-overlayShow fixed inset-0 z-20" />
       <Dialog.Content className="z-20 overflow-auto	text-white data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] min-h-[300px] w-[90vw] max-w-[700px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-[#222138] p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-        <div className='font-bold mb-2'>Workspaces</div>
+        <div className='font-bold mb-2 flex gap-2 items-center'>
+          <FolderKanban size={24} />
+          <div>Workspaces </div>
+        </div>
         <div className='workspaces flex flex-col gap-2'>
           <div className='workspace grid grid-cols-4 gap-4 shadow-md px-2 py-2 rounded-md bg-[#333154] font-bold text-[14px]'>
             <div>Name</div>
@@ -32,7 +35,7 @@ export function Workspace() {
           </div>
           {workspaces && workspaces.map((workspace, i) => {
             const { name, creationDate, updateDate } = workspace
-            return <div key={i} className={`workspace grid grid-cols-4 gap-4 shadow-md px-2 py-2 rounded-md text-[12px] ${store.selectedWorkspace == i ? 'bg-[#504cc6] ' : 'bg-[#333154]'}`}>
+            return <div key={i} className={`workspace grid grid-cols-4 gap-4 shadow-md px-2 py-2 rounded-md text-[12px] ${store.selectedWorkspace == i ? 'bg-[#504cc6]' : 'bg-[#333154]'}`}>
               <div className='font-bold cursor-pointer' onClick={() => {
                 store.loadNewWorkspace(workspaces[i], i)
                 setOpen(false)
