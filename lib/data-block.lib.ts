@@ -2,7 +2,7 @@ import { WorkspaceType } from "@/store/store";
 
 export type Data = object[]
 
-export function exportJsonData(data: WorkspaceType, filename: string) {
+export function exportJsonData(data: object, filename: string) {
   const jsonData = JSON.stringify(data);
   const blob = new Blob([jsonData], { type: 'application/json' });
   downloadFile(blob, `data-${filename}-${Date.now()}.json`)

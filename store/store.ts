@@ -1,4 +1,4 @@
-import { Node, Edge, applyNodeChanges, applyEdgeChanges, OnNodesChange, OnEdgesChange } from 'reactflow';
+import { Node, Connection, OnConnect, Edge, applyNodeChanges, applyEdgeChanges, OnNodesChange, OnEdgesChange, addEdge } from 'reactflow';
 import { nanoid } from 'nanoid';
 import { create } from 'zustand';
 import { nodes, edges } from './data'
@@ -22,6 +22,7 @@ export type RFState = {
   darkmode: boolean;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
+  onConnect: OnConnect;
   setNodes: (nodes: Node[]) => void;
   setEdges: (edges: Edge[]) => void;
   setName: (name: string) => void;
@@ -65,7 +66,11 @@ export const useStore = create<RFState>((set, get) => ({
   setEdges: (edges: Edge[]) => {
     set({ edges });
   },
-
+  onConnect: (connection: Connection) => {
+    set({
+      edges: addEdge(connection, get().edges),
+    });
+  },
   createNode(type) {
     const id = nanoid();
 

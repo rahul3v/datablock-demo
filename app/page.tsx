@@ -1,4 +1,3 @@
-//@ts-nocheck
 'use client';
 
 import React from 'react';
@@ -21,7 +20,7 @@ import { MoonStar, Download } from 'lucide-react'
 import { Table, Blocks, Workspace, WORKSPACE } from '@/components'
 
 import { useShallow } from 'zustand/react/shallow';
-import { useStore } from '@/store/store';
+import { RFState, useStore } from '@/store/store';
 import { FileName } from '@/components/FileName';
 import NewFile from '@/components/NewFile';
 import SaveFile from '@/components/SaveFile';
@@ -41,12 +40,14 @@ const DATA = [{ a: 23, b: 45 }]
 const SELECTED = 0
 
 const buttonStyle = `px-3 py-1 rounded-xl border-violet-950 z-10 bg-indigo-800 cursor-pointer opacity-80 duration-200 hover:opacity-100 shadow`
-const selector = (store) => ({
+
+const selector = (store: RFState) => ({
   nodes: store.nodes,
   edges: store.edges,
   name: store.name,
   onNodesChange: store.onNodesChange,
   onEdgesChange: store.onEdgesChange,
+  onConnect: store.onConnect,
   addEdge: store.addEdge,
   setName: store.setName,
   addFilter: () => store.createNode('filter'),
@@ -61,7 +62,7 @@ const OverviewFlow = () => {
       <div className='flex gap-4'>
         <div><Workspace /></div>
         <div>
-          <SaveFile data={WORKSPACE}/>
+          <SaveFile data={WORKSPACE} />
         </div>
         <div>
           <NewFile />
@@ -89,7 +90,7 @@ const OverviewFlow = () => {
         edges={store.edges}
         onNodesChange={store.onNodesChange}
         onEdgesChange={store.onEdgesChange}
-        onConnect={store.addEdge}
+        onConnect={store.onConnect}
         proOptions={{ hideAttribution: true }}
         fitView
         nodeTypes={nodeTypes}
