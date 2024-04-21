@@ -1,7 +1,7 @@
 import { getLocalStorageData } from '@/lib/data-block.lib';
 import { type WorkspaceType } from '@/store/store';
 import * as Dialog from '@radix-ui/react-dialog';
-import { Trash, X } from 'lucide-react';
+import { FolderKanban, Trash, X } from 'lucide-react';
 
 export const WORKSPACE: WorkspaceType[] = [
   {
@@ -19,9 +19,10 @@ export function Workspace() {
 
   return <Dialog.Root>
     <Dialog.Trigger>
-      <button>
-        Workspaces
-      </button>
+      <div className="flex gap-1 cursor-pointer">
+        <FolderKanban size={16} />
+        <div>Workspaces</div>
+      </div>
     </Dialog.Trigger>
     <Dialog.Portal>
       <Dialog.Overlay className="bg-black/75 data-[state=open]:animate-overlayShow fixed inset-0 z-20" />

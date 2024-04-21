@@ -16,13 +16,15 @@ import FilterBlock from '@/blocks/transform/filter-block';
 import 'reactflow/dist/style.css';
 import '@/style/overview.css';
 import '@/style/interface.css';
-import { setLocalStorage, exportCsvData, exportJsonData } from '@/lib/data-block.lib';
+import { exportCsvData, exportJsonData } from '@/lib/data-block.lib';
 import { MoonStar, Download } from 'lucide-react'
 import { Table, Blocks, Workspace, WORKSPACE } from '@/components'
 
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@/store/store';
 import { FileName } from '@/components/FileName';
+import NewFile from '@/components/NewFile';
+import SaveFile from '@/components/SaveFile';
 
 const nodeTypes = {
   custom: CustomNode,
@@ -56,18 +58,16 @@ const OverviewFlow = () => {
 
   return (<div className='board'>
     <div className='header justify-between'>
-      <div className='flex gap-2'>
+      <div className='flex gap-4'>
         <div><Workspace /></div>
         <div>
-          <button onClick={() => {
-            setLocalStorage(WORKSPACE)
-          }}>Save</button>
+          <SaveFile data={WORKSPACE}/>
         </div>
         <div>
-          <button>New</button>
+          <NewFile />
         </div>
       </div>
-      <FileName/>
+      <FileName />
       <div className='flex gap-4'>
         <div className='flex gap-1 cursor-pointer' onClick={() => {
           exportJsonData(WORKSPACE[SELECTED], 'workspace')
