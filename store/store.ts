@@ -15,6 +15,7 @@ export type RFState = {
   setEdges: (edges: Edge[]) => void;
   createNode: (type: NodeType) => void;
   addEdge: (data: Edge) => void;
+  deleteNode: (id: string) => void;
   updateNode: (id: string, data: Node) => void;
 };
 
@@ -81,6 +82,12 @@ export const useStore = create<RFState>((set, get) => ({
     const edge = { ...data, id };
 
     set({ edges: [edge, ...get().edges] });
+  },
+
+  deleteNode(id: string) {
+    set({
+      nodes: get().nodes.filter(node => node.id !== id)
+    })
   },
 
   updateNode(id, data) {
