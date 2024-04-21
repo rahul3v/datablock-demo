@@ -32,14 +32,14 @@ export function Workspace() {
           </div>
           {workspaces && workspaces.map((workspace, i) => {
             const { name, creationDate, updateDate } = workspace
-            return <div key={i} className={`workspace grid grid-cols-4 gap-4 shadow-md px-2 py-2 rounded-md text-[12px] ${store.selectedWorkspace == i?'bg-[#504cc6] ':'bg-[#333154]'}`}>
+            return <div key={i} className={`workspace grid grid-cols-4 gap-4 shadow-md px-2 py-2 rounded-md text-[12px] ${store.selectedWorkspace == i ? 'bg-[#504cc6] ' : 'bg-[#333154]'}`}>
               <div className='font-bold cursor-pointer' onClick={() => {
                 store.loadNewWorkspace(workspaces[i], i)
                 setOpen(false)
               }}>{name}</div>
               <div className='opacity-85'>{String(new Date(creationDate).toLocaleString())}</div>
               <div className='opacity-85'>{String(new Date(updateDate).toLocaleString())}</div>
-              <div className='justify-self-center	opacity-85 hover:opacity-100' onClick={() => {
+              <div className='justify-self-center	opacity-85 cursor-pointer hover:opacity-100' onClick={() => {
                 workspaces.splice(i, 1)
                 setWorkspaces([...workspaces])
                 setLocalStorage(workspaces)
