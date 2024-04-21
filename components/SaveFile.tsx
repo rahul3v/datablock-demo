@@ -8,7 +8,7 @@ export default function SaveFile(data: WorkspaceType[]) {
     setLocalStorage(data)
   }}>
     <Save size={16} />
-    <div>New</div>
+    <div>Save</div>
   </div>
   )
 }

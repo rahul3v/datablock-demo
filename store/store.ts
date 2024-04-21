@@ -43,7 +43,7 @@ export const useStore = create<RFState>((set, get) => ({
 
   setNewWorkspace() {
     set({
-      name: 'data-flow',
+      name: `data-flow-${Date.now()}`,
       nodes: [],
       edges: [],
       createdDate: Date.now(),
