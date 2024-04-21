@@ -1,15 +1,36 @@
-import { applyNodeChanges, applyEdgeChanges } from 'reactflow';
+import { Node, Edge, applyNodeChanges, applyEdgeChanges, OnNodesChange, OnEdgesChange } from 'reactflow';
 import { nanoid } from 'nanoid';
 import { create } from 'zustand';
 import { nodes, edges } from './data'
 
-export const useStore = create((set, get) => ({
+export type NodeType = 'filter' | 'filepicker'
+
+export type RFState = {
+  nodes: Node<any>[];
+  edges: Edge[];
+  name: string;
+  onNodesChange: OnNodesChange;
+  onEdgesChange: OnEdgesChange;
+  setNodes: (nodes: Node[]) => void;
+  setEdges: (edges: Edge[]) => void;
+  createNode: (type: NodeType) => void;
+  addEdge: (data: Edge) => void;
+  updateNode: (id: string, data: Node) => void;
+};
+
+export const useStore = create<RFState>((set, get) => ({
   nodes: nodes,
   edges: edges,
   name: 'data-flow',
 
-  setName(name) {
+  setName(name: string) {
     set({ name })
+  },
+  setNodes: (nodes: Node[]) => {
+    set({ nodes });
+  },
+  setEdges: (edges: Edge[]) => {
+    set({ edges });
   },
 
   createNode(type) {
@@ -57,7 +78,7 @@ export const useStore = create((set, get) => ({
 
   addEdge(data) {
     const id = nanoid(6);
-    const edge = { id, ...data };
+    const edge = { ...data, id };
 
     set({ edges: [edge, ...get().edges] });
   },
