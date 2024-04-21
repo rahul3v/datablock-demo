@@ -1,18 +1,14 @@
 //@ts-nocheck
 'use client';
 
-import React, { useCallback, useRef } from 'react';
+import React from 'react';
 import ReactFlow, {
-  addEdge,
+  Panel,
   MiniMap,
   Controls,
   Background,
-  useNodesState,
-  useEdgesState,
-  updateEdge
 } from 'reactflow';
 
-import { nodes as initialNodes, edges as initialEdges } from '@/store/data';
 import CustomNode from '@/blocks/nodes/CustomNode';
 import FileBlock from '@/blocks/input/file-block';
 import FilterBlock from '@/blocks/transform/filter-block';
@@ -23,6 +19,9 @@ import '@/style/interface.css';
 import { setLocalStorage, exportCsvData, exportJsonData } from '@/lib/data-block.lib';
 import { MoonStar, Download } from 'lucide-react'
 import { Table, Blocks, Workspace, WORKSPACE } from '@/components'
+
+import { useShallow } from 'zustand/react/shallow';
+import { useStore } from '@/store/store';
 
 const nodeTypes = {
   custom: CustomNode,
@@ -39,43 +38,20 @@ const DATA = [{ a: 23, b: 45 }]
 const SELECTED = 0
 
 const buttonStyle = `px-3 py-1 rounded-xl border-violet-950 z-10 bg-indigo-800 cursor-pointer opacity-80 duration-200 hover:opacity-100 shadow`
+const selector = (store) => ({
+  nodes: store.nodes,
+  edges: store.edges,
+  name: store.name,
+  onNodesChange: store.onNodesChange,
+  onEdgesChange: store.onEdgesChange,
+  addEdge: store.addEdge,
+  setName: store.setName,
+  addFilter: () => store.createNode('filter'),
+  addFile: () => store.createNode('filepicker')
+});
 
 const OverviewFlow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState<any>(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const onConnect = useCallback((params: any) => setEdges((eds) => addEdge(params, eds)), []);
-  const edgeUpdateSuccessful = useRef(true);
-
-  // we are using a bit of a shortcut here to adjust the edge type
-  // this could also be done with a custom edge for example
-  const edgesWithUpdatedTypes = edges.map((edge) => {
-    if (edge.sourceHandle) {
-      const customType = nodes.find((node) => node.type === 'custom')
-      if (customType) {
-        const edgeType = customType.data.selects[edge.sourceHandle];
-        edge.type = edgeType;
-      }
-    }
-
-    return edge;
-  });
-
-  const onEdgeUpdateStart = useCallback(() => {
-    edgeUpdateSuccessful.current = false;
-  }, []);
-
-  const onEdgeUpdate = useCallback((oldEdge, newConnection) => {
-    edgeUpdateSuccessful.current = true;
-    setEdges((els) => updateEdge(oldEdge, newConnection, els));
-  }, []);
-
-  const onEdgeUpdateEnd = useCallback((_, edge) => {
-    if (!edgeUpdateSuccessful.current) {
-      setEdges((eds) => eds.filter((e) => e.id !== edge.id));
-    }
-
-    edgeUpdateSuccessful.current = true;
-  }, []);
+  const store = useStore(useShallow(selector));
 
   return (<div className='board'>
     <div className='header justify-between'>
@@ -90,7 +66,7 @@ const OverviewFlow = () => {
           <button>New</button>
         </div>
       </div>
-      <div contentEditable className='focus:outline-none focus:underline' dangerouslySetInnerHTML={{ __html: "data flow" }}></div>
+      <div contentEditable className='focus:outline-none focus:underline' dangerouslySetInnerHTML={{ __html: store.name }} onInput={(e) => store.setName(e.target.textContent)}></div>
       <div className='flex gap-4'>
         <div className='flex gap-1 cursor-pointer' onClick={() => {
           exportJsonData(WORKSPACE[SELECTED], 'workspace')
@@ -108,18 +84,23 @@ const OverviewFlow = () => {
     <div className='flow'>
       <Blocks />
       <ReactFlow
-        nodes={nodes}
-        edges={edgesWithUpdatedTypes}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onEdgeUpdate={onEdgeUpdate}
-        onEdgeUpdateStart={onEdgeUpdateStart}
-        onEdgeUpdateEnd={onEdgeUpdateEnd}
-        onConnect={onConnect}
-        fitView
+        nodes={store.nodes}
+        edges={store.edges}
+        onNodesChange={store.onNodesChange}
+        onEdgesChange={store.onEdgesChange}
+        onConnect={store.addEdge}
         proOptions={{ hideAttribution: true }}
+        fitView
         nodeTypes={nodeTypes}
       >
+        <Panel position="top-right" className={'space-x-4'} >
+          <button className={buttonStyle} onClick={store.addFile}>
+            Add File
+          </button>
+          <button className={buttonStyle} onClick={store.addFilter}>
+            Add Filter
+          </button>
+        </Panel>
         <MiniMap style={minimapStyle} zoomable pannable />
         <Controls />
         <Background color="#aaa" gap={16} />
