@@ -69,26 +69,29 @@ export const useStore = create<RFState>((set, get) => ({
       updateDate: Date.now()
     }
     const workspaces = getLocalStorageData(WORKSPACE_KEY)
+    let selectedWorkspace = this.selectedWorkspace
     // if workspace is new
     if (this.isNew) {
 
       // check if workspace already exists
       if (workspaces) {
         workspaces.push(data)
+        selectedWorkspace = workspaces.length-1
         setLocalStorage(workspaces)
       } else {
+        selectedWorkspace = 0
         setLocalStorage([data])
       }
     } else {
       if (workspaces) {
-        workspaces[this.selectedWorkspace] = data
+        workspaces[selectedWorkspace] = data
         setLocalStorage(workspaces)
       } else {
         setLocalStorage([data])
       }
     }
 
-    set({ isNew: false })
+    set({ isNew: false, selectedWorkspace })
   },
 
   loadNewWorkspace(workspace, id) {
