@@ -14,36 +14,40 @@ const DummyData: TableData[] = [{
 }]
 
 export function Table({ dataset }: { dataset?: TableData[] | null }) {
-  const keys = Object.keys((dataset && dataset[0]) ? dataset[0] : DummyData[0])
-  const rows = (dataset && dataset[0]) ? dataset : DummyData
+  const hasData = (dataset && dataset[0])
+  const keys = Object.keys(hasData ? dataset[0] : DummyData[0])
+  const rows = hasData ? dataset : DummyData
 
-  return <div className="flex overflow-auto max-h-[400px]">
-    <div className="relative overflow-x-auto shadow-md rounded-lg">
-      <table className="text-sm text-left rtl:text-right text-gray-500 realdive">
-        <thead className="text-xs text-gray-700 uppercase bg-[#333154] sticky top-0">
-          <tr>
+  return <>
+    {!hasData && <div className='mb-2'>Dummy Data </div>}
+    <div className="flex overflow-auto max-h-[300px]">
+      <div className="relative overflow-x-auto shadow-md rounded-lg">
+        <table className="text-sm text-left rtl:text-right text-gray-500 realdive">
+          <thead className="text-xs text-gray-700 uppercase bg-[#333154] sticky top-0">
+            <tr>
+              {
+                keys.map(key => {
+                  return <th scope="col" className="text-white px-6 py-2" key={key}>{key}</th>
+                })
+              }
+            </tr>
+          </thead>
+          <tbody>
             {
-              keys.map(key => {
-                return <th scope="col" className="text-white px-6 py-2" key={key}>{key}</th>
+              rows.map((row, i) => {
+                return <tr className="border-b bg-[#222138] border-[#333154]" key={i}>
+                  {keys.map(key => {
+                    return <td className="px-6 py-1" key={key}>{row[key]}</td>
+                  })
+                  }
+                </tr>
               })
             }
-          </tr>
-        </thead>
-        <tbody>
-          {
-            rows.map((row, i) => {
-              return <tr className="border-b bg-[#222138] border-[#333154]" key={i}>
-                {keys.map(key => {
-                  return <td className="px-6 py-1" key={key}>{row[key]}</td>
-                })
-                }
-              </tr>
-            })
-          }
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
+  </>
 }
 
 
@@ -54,10 +58,11 @@ import { useOnSelectionChange } from 'reactflow';
 export function SelectionDataDisplay() {
   // const [selectedNodes, setSelectedNodes] = useState<any>([]);
   // const [selectedEdges, setSelectedEdges] = useState([]);
-  const { fileData } = useStore()
+  const { fileData, setFileData } = useStore()
 
   useOnSelectionChange({
     onChange: ({ nodes, edges }) => {
+      setFileData(nodes[0]?.data.fileData)
       // setSelectedNodes(nodes.map((node) => { return { id: node.id, data: node.data.fileData } }));
       // setSelectedEdges(edges.map((edge) => edge.id));
     },
