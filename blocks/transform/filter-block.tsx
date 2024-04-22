@@ -64,7 +64,7 @@ function Select({ value, nodeId, label, dataKey, options }: { value: string, nod
   return (
     <div className="custom-node__select">
       <div>{label}</div>
-      <select className="nodrag" onChange={onChange} value={value}>
+      <select className="nodrag px-2 py-1" onChange={onChange} value={value}>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
@@ -84,6 +84,7 @@ function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
 
   const [conected, setConected] = useState(true)
   const { setData } = useStore(useShallow(selector(id)));
+  
   return (
     <BlockTemplate id={id} label="Filter" type={"filter"}>
       <>
