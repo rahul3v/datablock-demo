@@ -39,6 +39,7 @@ const options = [
 export type FilterBlockData = {
   condition: null | string,
   column: null | string,
+  fileData?: { [key: string]: string }[]
 }
 
 function Select({ value, nodeId, label, dataKey, options }: { value: string, nodeId: string, label: string, dataKey: keyof FilterBlockData, options: { value: string, label: string }[] }) {
@@ -84,7 +85,7 @@ function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
 
   const [conected, setConected] = useState(true)
   const { setData } = useStore(useShallow(selector(id)));
-  
+
   return (
     <BlockTemplate id={id} label="Filter" type={"filter"}>
       <>

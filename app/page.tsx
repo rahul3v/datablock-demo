@@ -6,6 +6,7 @@ import ReactFlow, {
   MiniMap,
   Controls,
   Background,
+  ReactFlowProvider,
 } from 'reactflow';
 
 import FileBlock from '@/blocks/input/file-block';
@@ -17,7 +18,7 @@ import '@/style/overview.css';
 import '@/style/interface.css';
 import { exportCsvData, exportJsonData } from '@/lib/data-block.lib';
 import { MoonStar } from 'lucide-react'
-import { Table, Blocks, Workspace } from '@/components'
+import { Blocks, Workspace, SelectionDataDisplay } from '@/components'
 
 import { useShallow } from 'zustand/react/shallow';
 import { type RFState, useStore } from '@/store/store';
@@ -59,72 +60,74 @@ const selector = (store: RFState) => ({
 const OverviewFlow = () => {
   const store = useStore(useShallow(selector));
 
-  return (<div className='board'>
-    <div className='header justify-between'>
-      <div className='flex gap-4'>
-        <div><Workspace /></div>
-        <div>
-          <SaveFile />
+  return (
+    <ReactFlowProvider>
+      <div className='board'>
+        <div className='header justify-between'>
+          <div className='flex gap-4'>
+            <div><Workspace /></div>
+            <div>
+              <SaveFile />
+            </div>
+            <div>
+              <NewFile />
+            </div>
+          </div>
+          <FileName />
+          <div className='flex gap-4'>
+            <ExportFile />
+            <div className='cursor-pointer'>
+              <MoonStar size={16} />
+            </div>
+          </div>
         </div>
-        <div>
-          <NewFile />
+        <div className='flow'>
+          <Blocks />
+          <ReactFlow
+            nodes={store.nodes}
+            edges={store.edges}
+            onNodesChange={store.onNodesChange}
+            onEdgesChange={store.onEdgesChange}
+            onConnect={store.onConnect}
+            proOptions={{ hideAttribution: true }}
+            fitView
+            nodeTypes={nodeTypes}
+          >
+            <Panel position="top-right" className={'space-x-4'} >
+              <button className={buttonStyle} onClick={store.addFile}>
+                Add File
+              </button>
+              <button className={buttonStyle} onClick={store.addFilter}>
+                Add Filter
+              </button>
+              <button className={buttonStyle} onClick={store.addExportFile}>
+                Add Export
+              </button>
+            </Panel>
+            <Panel position="bottom-left" className={'space-x-4 translate-x-12'} >
+              <HistoryUi />
+            </Panel>
+            <MiniMap style={minimapStyle} zoomable pannable />
+            <Controls />
+            <Background color="#aaa" gap={16} />
+          </ReactFlow>
+        </div>
+        <div className='results'>
+          <div className='result-head flex gap-2 px-2 py-2 items-center'>
+            <div> Export : </div>
+            <button className={buttonStyle} onClick={() => {
+              exportCsvData(DATA, 'data')
+            }}>CSV</button>
+            <button className={buttonStyle} onClick={() => {
+              exportJsonData(DATA, 'data')
+            }}>JSON</button>
+          </div>
+          <div className='result-table p-2'>
+            <SelectionDataDisplay />
+          </div>
         </div>
       </div>
-      <FileName />
-      <div className='flex gap-4'>
-        <ExportFile />
-        <div className='cursor-pointer'>
-          <MoonStar size={16} />
-        </div>
-      </div>
-    </div>
-    <div className='flow'>
-      <Blocks />
-      <ReactFlow
-        nodes={store.nodes}
-        edges={store.edges}
-        onNodesChange={store.onNodesChange}
-        onEdgesChange={store.onEdgesChange}
-        onConnect={store.onConnect}
-        proOptions={{ hideAttribution: true }}
-        fitView
-        nodeTypes={nodeTypes}
-      >
-        <Panel position="top-right" className={'space-x-4'} >
-          <button className={buttonStyle} onClick={store.addFile}>
-            Add File
-          </button>
-          <button className={buttonStyle} onClick={store.addFilter}>
-            Add Filter
-          </button>
-          <button className={buttonStyle} onClick={store.addExportFile}>
-            Add Export
-          </button>
-        </Panel>
-        <Panel position="bottom-left" className={'space-x-4 translate-x-12'} >
-          <HistoryUi />
-        </Panel>
-        <MiniMap style={minimapStyle} zoomable pannable />
-        <Controls />
-        <Background color="#aaa" gap={16} />
-      </ReactFlow>
-    </div>
-    <div className='results'>
-      <div className='result-head flex gap-2 px-2 py-2 items-center'>
-        <div> Export : </div>
-        <button className={buttonStyle} onClick={() => {
-          exportCsvData(DATA, 'data')
-        }}>CSV</button>
-        <button className={buttonStyle} onClick={() => {
-          exportJsonData(DATA, 'data')
-        }}>JSON</button>
-      </div>
-      <div className='result-table p-2'>
-        <Table />
-      </div>
-    </div>
-  </div>
-  );
+    </ReactFlowProvider>);
 };
 
 export default OverviewFlow;
