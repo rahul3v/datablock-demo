@@ -4,6 +4,9 @@ import { create } from 'zustand';
 import { nodes, edges } from './data'
 import { getLocalStorageData, setLocalStorage } from '@/lib/data-block.lib';
 
+import { type FileBlockData } from '@/blocks/input/file-block'
+import { type FilterBlockData } from '@/blocks/transform/filter-block';
+
 export type NodeType = 'filter' | 'filepicker' | 'exportfile'
 
 export type WorkspaceType = {
@@ -36,7 +39,7 @@ export type RFState = {
   createNode: (type: NodeType) => void;
   addEdge: (data: Edge) => void;
   deleteNode: (id: string) => void;
-  updateNode: (id: string, data: Node) => void;
+  updateNode: (id: string, data: FileBlockData | FilterBlockData) => void;
 };
 
 export const useStore = create<RFState>((set, get) => ({
@@ -76,7 +79,7 @@ export const useStore = create<RFState>((set, get) => ({
       // check if workspace already exists
       if (workspaces) {
         workspaces.push(data)
-        selectedWorkspace = workspaces.length-1
+        selectedWorkspace = workspaces.length - 1
         setLocalStorage(workspaces)
       } else {
         selectedWorkspace = 0
@@ -122,27 +125,20 @@ export const useStore = create<RFState>((set, get) => ({
     switch (type) {
       case 'filter': {
         data = {
-          selects: {
-            'handle-0': 'smoothstep',
-            'handle-1': 'smoothstep',
-          },
+          condition: null,
+          column: null,
         };
         break;
       }
       case 'filepicker': {
-        data = {
-          selects: {
-            'handle-0': 'smoothstep',
-            'handle-1': 'smoothstep',
-          },
+        data = <FileBlockData>{
+          fileData: null
         };
         break;
       }
       case 'exportfile': {
         data = {
-          selects: {
-            'handle-0': 'smoothstep',
-          },
+
         };
 
         break;

@@ -6,10 +6,7 @@ export const nodes = [
     type: 'filepicker',
     position: { x: -210, y: 200 },
     data: {
-      selects: {
-        'handle-0': 'smoothstep',
-        'handle-1': 'smoothstep',
-      },
+      fileData: null
     },
   },
   {
@@ -17,10 +14,8 @@ export const nodes = [
     type: 'filter',
     position: { x: -210, y: 400 },
     data: {
-      selects: {
-        'handle-0': 'smoothstep',
-        'handle-1': 'smoothstep',
-      },
+      condition: null,
+      column: null,
     },
   },
 ];

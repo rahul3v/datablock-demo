@@ -2,8 +2,21 @@ import { CsvFileDataToJsonFormat } from "@/lib/data-block.lib"
 import { memo, useRef } from "react"
 import { Handle, Position } from "reactflow"
 import BlockTemplate from "@/components/blockui/Template";
+import { useStore } from "@/store/store";
+import { useShallow } from "zustand/react/shallow";
+import { RFState } from "@/store/store";
+
+export type FileBlockData = {
+  fileData: null | []
+}
+
+const selector = (id: string) => (store: RFState) => ({
+  setFileData: (data: null | []) => store.updateNode(id, { fileData: data }),
+});
 
 function FileBlock({ id }: { id: string }) {
+  const { setFileData } = useStore(useShallow(selector(id)));
+
   const ref = useRef<HTMLDivElement>(null)
 
   return <BlockTemplate id={id} label="FIle Picker" type={"filepicker"}>
@@ -34,10 +47,11 @@ function FileBlock({ id }: { id: string }) {
                 if (ref.current) {
                   // ref.current.style.display = 'block !important'
                   ref.current.innerHTML = obj === null ? '' : `[DATASET] ${obj.length} rows | ${Object.keys(obj[0]).length} columns`
-
+                  setFileData(obj)
                 }
                 if (obj === null) { alert("wronng file format"); return }
               } catch (e) {
+                setFileData(null)
                 if (ref.current) ref.current.innerHTML = ""
                 alert("wronng file format"); return
               }

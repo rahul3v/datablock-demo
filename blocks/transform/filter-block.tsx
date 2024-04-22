@@ -1,6 +1,9 @@
 import React, { ChangeEvent, memo, useState } from 'react';
 import { Handle, useReactFlow, useStoreApi, Position } from 'reactflow';
 import BlockTemplate from "@/components/blockui/Template";
+import { useStore } from "@/store/store";
+import { useShallow } from "zustand/react/shallow";
+import { RFState } from "@/store/store";
 
 const options = [
   {
@@ -33,7 +36,12 @@ const options = [
   }
 ];
 
-function Select({ value, handleId, nodeId }: { value: string, handleId: string, nodeId: string }) {
+export type FilterBlockData = {
+  condition: null | string,
+  column: null | string,
+}
+
+function Select({ value, nodeId, label, dataKey, options }: { value: string, nodeId: string, label: string, dataKey: keyof FilterBlockData, options: { value: string, label: string }[] }) {
   const { setNodes } = useReactFlow();
   const store = useStoreApi();
 
@@ -44,10 +52,7 @@ function Select({ value, handleId, nodeId }: { value: string, handleId: string, 
         if (node.id === nodeId) {
           node.data = {
             ...node.data,
-            selects: {
-              ...node.data.selects,
-              [handleId]: evt.target.value,
-            },
+            [dataKey]: evt.target.value,
           };
         }
 
@@ -58,7 +63,7 @@ function Select({ value, handleId, nodeId }: { value: string, handleId: string, 
 
   return (
     <div className="custom-node__select">
-      <div>Condition</div>
+      <div>{label}</div>
       <select className="nodrag" onChange={onChange} value={value}>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -71,18 +76,21 @@ function Select({ value, handleId, nodeId }: { value: string, handleId: string, 
 }
 const buttonStyle = `px-3 py-1 w-full rounded-xl text-white bg-orange-400	cursor-pointer`
 
-function FilterBlock({ id, data }: { id: string, data: { selects: { [key: string]: string } } }) {
+const selector = (id: string) => (store: RFState) => ({
+  setData: (data: FilterBlockData) => store.updateNode(id, data),
+});
+
+function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
 
   const [conected, setConected] = useState(true)
-
+  const { setData } = useStore(useShallow(selector(id)));
   return (
     <BlockTemplate id={id} label="Filter" type={"filter"}>
       <>
         <div className="custom-node__body">
           {conected ? <>
-            {Object.keys(data.selects).map((handleId) => (
-              <Select key={handleId} nodeId={id} value={data.selects[handleId]} handleId={handleId} />
-            ))}
+            <Select key={"column"} nodeId={id} dataKey="column" label="Column" options={[]} value={data.column ? data.column : ''} />
+            <Select key={"condition"} nodeId={id} dataKey="condition" label="Condition" options={options} value={data.condition ? data.condition : ''} />
             <input className='mb-2 w-full px-1 border-gray-400 border rounded-sm' type="text" />
             <button className={buttonStyle}>Run</button>
           </>
