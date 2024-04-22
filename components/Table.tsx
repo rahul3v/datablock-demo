@@ -13,9 +13,9 @@ const DummyData: TableData[] = [{
   C: 411,
 }]
 
-export function Table({ dataset }: { dataset?: TableData[] }) {
-  const keys = Object.keys(dataset ? dataset[0] : DummyData[0])
-  const rows = dataset ? dataset : DummyData
+export function Table({ dataset }: { dataset?: TableData[] | null }) {
+  const keys = Object.keys((dataset && dataset[0]) ? dataset[0] : DummyData[0])
+  const rows = (dataset && dataset[0]) ? dataset : DummyData
 
   return <div className="flex overflow-auto max-h-[400px]">
     <div className="relative overflow-x-auto shadow-md rounded-lg">
@@ -24,7 +24,7 @@ export function Table({ dataset }: { dataset?: TableData[] }) {
           <tr>
             {
               keys.map(key => {
-                return <th scope="col" className="text-white px-6 py-1" key={key}>{key}</th>
+                return <th scope="col" className="text-white px-6 py-2" key={key}>{key}</th>
               })
             }
           </tr>
@@ -47,22 +47,25 @@ export function Table({ dataset }: { dataset?: TableData[] }) {
 }
 
 
+import { useStore } from '@/store/store'
 import { useState } from 'react';
 import { useOnSelectionChange } from 'reactflow';
 
 export function SelectionDataDisplay() {
-  const [selectedNodes, setSelectedNodes] = useState<any>([]);
+  // const [selectedNodes, setSelectedNodes] = useState<any>([]);
   // const [selectedEdges, setSelectedEdges] = useState([]);
+  const { fileData } = useStore()
 
   useOnSelectionChange({
     onChange: ({ nodes, edges }) => {
-      setSelectedNodes(nodes.map((node) => { return { id: node.id, data: node.data.fileData } }));
+      // setSelectedNodes(nodes.map((node) => { return { id: node.id, data: node.data.fileData } }));
       // setSelectedEdges(edges.map((edge) => edge.id));
     },
   });
+  // console.log("fileData", fileData)
   return (
     <div>
-      <Table dataset={selectedNodes[0]?.data ? selectedNodes[0].data : null} />
+      <Table dataset={fileData ? fileData : null} />
       {/* <p>Selected nodes: {selectedNodes.join(', ')}</p> */}
       {/* <p>Selected edges: {selectedEdges.join(', ')}</p> */}
     </div>

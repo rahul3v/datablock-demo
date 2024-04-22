@@ -39,14 +39,13 @@ const minimapStyle = {
   width: 150
 };
 
-const DATA = [{ a: 23, b: 45 }]
-
 const buttonStyle = `px-3 py-1 rounded-xl border-violet-950 z-10 bg-indigo-800 cursor-pointer opacity-80 duration-200 hover:opacity-100 shadow`
 
 const selector = (store: RFState) => ({
   nodes: store.nodes,
   edges: store.edges,
   name: store.name,
+  fileData: store.fileData ? store.fileData : [],
   onNodesChange: store.onNodesChange,
   onEdgesChange: store.onEdgesChange,
   onConnect: store.onConnect,
@@ -116,10 +115,10 @@ const OverviewFlow = () => {
           <div className='result-head flex gap-2 px-2 py-2 items-center'>
             <div> Export : </div>
             <button className={buttonStyle} onClick={() => {
-              exportCsvData(DATA, 'data')
+              exportCsvData(store.fileData, 'data')
             }}>CSV</button>
             <button className={buttonStyle} onClick={() => {
-              exportJsonData(DATA, 'data')
+              exportJsonData(store.fileData, 'data')
             }}>JSON</button>
           </div>
           <div className='result-table p-2'>

@@ -27,6 +27,8 @@ export type RFState = {
   isNew: boolean;
   darkmode: boolean;
   selectedWorkspace: number;
+  fileData: { [key: string]: string }[];
+  setFileData: (data: { [key: string]: string }[]) => void;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
@@ -51,6 +53,11 @@ export const useStore = create<RFState>((set, get) => ({
   darkmode: true,
   isNew: false,
   selectedWorkspace: 0,
+  fileData: [],
+
+  setFileData(data) {
+    set({ fileData: data })
+  },
 
   setNewWorkspace() {
     set({
@@ -177,7 +184,8 @@ export const useStore = create<RFState>((set, get) => ({
         node.id === id
           ? { ...node, data: { ...node.data, ...data } }
           : node
-      )
+      ),
+      fileData:data.fileData?data.fileData:[]
     });
   },
 
