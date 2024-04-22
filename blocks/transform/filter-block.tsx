@@ -42,7 +42,7 @@ export type FilterBlockData = {
   fileData?: { [key: string]: string }[]
 }
 
-function Select({ value, nodeId, label, dataKey, options }: { value: string, nodeId: string, label: string, dataKey: keyof FilterBlockData, options: { value: string, label: string }[] }) {
+function Select({ value, nodeId, label, dataKey, options, isHandle }: { value: string, nodeId: string, label: string, dataKey: keyof FilterBlockData, options: { value: string, label: string }[], isHandle?: 'left' | 'right' }) {
   const { setNodes } = useReactFlow();
   const store = useStoreApi();
 
@@ -56,22 +56,26 @@ function Select({ value, nodeId, label, dataKey, options }: { value: string, nod
             [dataKey]: evt.target.value,
           };
         }
-
         return node;
       })
     );
   };
 
   return (
-    <div className="custom-node__select">
-      <div>{label}</div>
-      <select className="nodrag px-2 py-1" onChange={onChange} value={value}>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+    <div className="custom-node__select relative">
+      <div className='text-[10px]'>{label}</div>
+      <div className='relative'>
+        <select className="nodrag px-2 py-1 w-full" onChange={onChange} value={value}>
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <div>
+          {isHandle && <Handle type="target" position={isHandle === 'left' ? Position.Left : Position.Right} id={nodeId} />}
+        </div>
+      </div>
     </div>
   );
 }
@@ -89,9 +93,12 @@ function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
   return (
     <BlockTemplate id={id} label="Filter" type={"filter"}>
       <>
-        <div className="custom-node__body">
+        <div className=' flex flex-col gap-2'>
           {conected ? <>
-            <Select key={"column"} nodeId={id} dataKey="column" label="Column" options={[]} value={data.column ? data.column : ''} />
+            <div>
+              <Select key={"column"} isHandle="left" nodeId={id} dataKey="column" label="Column" options={[]} value={data.column ? data.column : ''} />
+            </div>
+
             <Select key={"condition"} nodeId={id} dataKey="condition" label="Condition" options={options} value={data.condition ? data.condition : ''} />
             <input className='mb-2 w-full px-1 border-gray-400 border rounded-sm' type="text" />
             <button className={buttonStyle}>Run</button>
@@ -99,7 +106,6 @@ function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
             : <> <div>Connect to datasource</div></>
           }
           <Handle type="source" position={Position.Right} id={id} />
-          <Handle type="target" position={Position.Left} id={id} />
         </div>
       </>
     </BlockTemplate>

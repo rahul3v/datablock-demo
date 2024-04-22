@@ -9,5 +9,5 @@ export function DeleteButton({ id }: { id: string }) {
     deleteElements({ nodes: [{ id }] });
   }, [id, deleteElements]);
 
-  return <div onClick={onClick} className="cursor-pointer opacity-75 hover:opacity-100"><X size={14} /></div>
+  return <div onClick={onClick} className="cursor-pointer opacity-75 hover:opacity-100"><X size={12} /></div>
 }

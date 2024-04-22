@@ -131,7 +131,7 @@ export const useStore = create<RFState>((set, get) => ({
     let data = {}
     switch (type) {
       case 'filter': {
-        data = {
+        data = <FilterBlockData>{
           condition: null,
           column: null,
         };
@@ -185,7 +185,7 @@ export const useStore = create<RFState>((set, get) => ({
           ? { ...node, data: { ...node.data, ...data } }
           : node
       ),
-      fileData:data.fileData?data.fileData:[]
+      fileData: data.fileData ? data.fileData : []
     });
   },
 
