@@ -8,7 +8,6 @@ import ReactFlow, {
   Background,
 } from 'reactflow';
 
-import CustomNode from '@/blocks/nodes/CustomNode';
 import FileBlock from '@/blocks/input/file-block';
 import FilterBlock from '@/blocks/transform/filter-block';
 import ExportBlock from '@/blocks/output/export-block';
@@ -29,7 +28,6 @@ import { HistoryUi } from '@/components/appui/HistoryUi';
 import ExportFile from '@/components/ExportFile';
 
 const nodeTypes = {
-  custom: CustomNode,
   filepicker: FileBlock,
   filter: FilterBlock,
   exportfile: ExportBlock,
