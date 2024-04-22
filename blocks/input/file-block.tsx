@@ -21,8 +21,8 @@ function FileBlock({ id }: { id: string }) {
 
   return <BlockTemplate id={id} label="FIle Picker" type={"filepicker"}>
     <>
-      <div>
-        Choose a data file
+      <div className="py-2">
+        Choose a dataset file <b>(.json, .csv)</b>
       </div>
       <div>
         <input type="file" accept=".json, .csv" onChange={(event) => {
