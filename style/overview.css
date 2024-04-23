@@ -24,3 +24,11 @@
   border-radius: 0;
   background-color: #778899;
 }
+
+.react-flow__handle-connecting {
+  background: #ff6060;
+}
+
+.react-flow__handle-valid {
+  background: #55dd99;
+}

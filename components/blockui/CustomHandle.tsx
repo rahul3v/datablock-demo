@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { type HandleProps, Edge, Node, getConnectedEdges, Handle, useNodeId, useStore } from 'reactflow';
+import { type HandleProps, Edge, Node, getConnectedEdges, Handle, useNodeId, useStore, useNodes } from 'reactflow';
 
 const selector = (s: { nodeInternals: Map<string, Node>, edges: Edge[] }) => ({
   nodeInternals: s.nodeInternals,
@@ -8,11 +8,13 @@ const selector = (s: { nodeInternals: Map<string, Node>, edges: Edge[] }) => ({
 
 type CustomeHandleType = HandleProps & {
   connectionLimit: number | ((obj: { node: Node, connectedEdges: Edge[] }) => boolean)
+  acceptType?: string[]
 }
 
 const CustomHandle = (props: CustomeHandleType) => {
   const { nodeInternals, edges } = useStore(selector);
   const nodeId = useNodeId()!;
+  const nodes = useNodes();
 
   const isHandleConnectable = useMemo(() => {
 
@@ -35,7 +37,14 @@ const CustomHandle = (props: CustomeHandleType) => {
   }, [nodeInternals, edges, nodeId, props.connectionLimit]);
 
   return (
-    <Handle {...props} isConnectable={isHandleConnectable}></Handle>
+    <Handle {...props}
+      isValidConnection={(connection) => {
+        if (props.acceptType == undefined) return true
+
+        const targetNode = nodes.find(node => node.type ? props.acceptType?.includes(node.type) : true)!
+        return connection.target === targetNode.id
+      }}
+      isConnectable={isHandleConnectable}></Handle>
   );
 };
 

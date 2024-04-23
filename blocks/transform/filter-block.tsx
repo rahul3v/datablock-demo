@@ -1,5 +1,5 @@
 import React, { ChangeEvent, memo, useState } from 'react';
-import { Handle, useReactFlow, useStoreApi, Position } from 'reactflow';
+import { Handle, useReactFlow, useStoreApi, Position, Connection, useNodes } from 'reactflow';
 import BlockTemplate from "@/components/blockui/Template";
 import { useStore } from "@/store/store";
 import { useShallow } from "zustand/react/shallow";
@@ -74,7 +74,7 @@ function Select({ value, nodeId, label, dataKey, options, isHandle }: { value: s
           ))}
         </select>
         <div>
-          {isHandle && <CustomHandle connectionLimit={1} type="target" position={isHandle === 'left' ? Position.Left : Position.Right} id={nodeId} />}
+          {isHandle && <CustomHandle acceptType={["filepicker",'filter']} connectionLimit={1} type="target" position={isHandle === 'left' ? Position.Left : Position.Right} id={nodeId} />}
         </div>
       </div>
     </div>
