@@ -1,4 +1,4 @@
-import React, { ChangeEvent, memo, useEffect, useState } from 'react';
+import React, { ChangeEvent, memo, useEffect, useRef, useState } from 'react';
 import { Handle, useReactFlow, useStoreApi, Position, Connection, useNodes } from 'reactflow';
 import BlockTemplate from "@/components/blockui/Template";
 import { useStore } from "@/store/store";
@@ -27,21 +27,21 @@ const options = [
     value: "8",
     label: "text does not includes"
   },
-  {
-    value: "notnull",
-    label: "data is not empty or null"
-  },
-  {
-    value: "regex",
-    label: "data matches regex"
-  }
+  // {
+  //   value: "notnull",
+  //   label: "data is not empty or null"
+  // },
+  // {
+  //   value: "regex",
+  //   label: "data matches regex"
+  // }
 ];
 
 export type FilterBlockData = {
   condition: null | string,
   column: null | { value: string, label: string }[],
   selectedColumn: null | string;
-  dataset?: { [key: string]: string }[];
+  datasource?: { [key: string]: string }[];
   fileData?: { [key: string]: string }[];
 }
 
@@ -75,12 +75,42 @@ const selector = (id: string) => (store: RFState) => ({
 function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
 
   const [conected, setConected] = useState(true);
+  const [isComputing, setComputing] = useState(false)
   const { setData } = useStore(useShallow(selector(id)));
+  const inputRef = useRef<HTMLInputElement>(null)
+  const dataRef = useRef<HTMLDivElement>(null);
 
   function onChange(value: string, datakey: keyof FilterBlockData) {
     setData({ ...data, [datakey]: value })
   }
+  function filterData() {
+    if (isComputing) return
+    setComputing(true)
+    let fileData
 
+    if (data.condition == "") {
+      fileData = data.datasource
+    }
+    if (data.selectedColumn) {
+      if (data.condition == "5") {
+        fileData = data.datasource?.filter((column => column[data.selectedColumn as string] === inputRef.current?.value))
+      }
+      if (data.condition == "6") {
+        fileData = data.datasource?.filter((column => column[data.selectedColumn as string] !== inputRef.current?.value))
+      }
+      if (data.condition == "7") {
+        fileData = data.datasource?.filter(column => column[data.selectedColumn as string].includes(String(inputRef.current?.value)))
+      }
+      if (data.condition == "8") {
+        fileData = data.datasource?.filter(column => !column[data.selectedColumn as string].includes(String(inputRef.current?.value)))
+      }
+    }
+    //@ts-ignore
+    dataRef.current!.innerHTML = fileData === null ? '' : `[DATASET] ${fileData.length} rows | ${Object.keys(fileData[0]).length} columns`
+    // console.log('fileeeeee',fileData,data)
+    setData({ ...data, fileData })
+    setComputing(false)
+  }
   return (
     <BlockTemplate id={id} label="Filter" type={"filter"}>
       <>
@@ -91,13 +121,14 @@ function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
           </div>
           {conected ? <>
             <Select key={"condition"} nodeId={id} dataKey="condition" label="Condition" onChange={onChange} options={options} value={data.condition ? data.condition : ''} />
-            <input className='mb-2 w-full px-1 border-gray-400 border rounded-sm' type="text" />
-            <button className={buttonStyle}>Run</button>
+            <input ref={inputRef} className='mb-2 w-full px-1 border-gray-400 border rounded-sm' type="text" />
+            <button className={buttonStyle} onClick={filterData}>{isComputing ? "Computing..." : "Run"}</button>
           </>
             : <> <div>Connect to datasource</div></>
           }
           <Handle type="source" position={Position.Right} id={id} />
         </div>
+        <div ref={dataRef} className="absolute text-[.5rem] z-10 mt-3 text-white"></div>
       </>
     </BlockTemplate>
   );

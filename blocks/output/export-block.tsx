@@ -23,9 +23,11 @@ function ExportBlock({ id }: { id: string }) {
       const dataset = node.data['fileData']
       if (type === 'csv') {
         exportCsvData(dataset, 'datset-file-' + Date.now())
+        return
       }
       if (type === 'json') {
         exportJsonData(dataset, 'datset-file-' + Date.now())
+        return
       }
     }
     alert('No Data found')

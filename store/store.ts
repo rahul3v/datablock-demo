@@ -124,34 +124,35 @@ export const useStore = create<RFState>((set, get) => ({
     console.log("connection", connection)
     const id = connection.source
     const targetNode = get().nodes.find(node => node.id == id)
-    
+
     //source
     switch (targetNode?.type) {
       case 'filepicker': {
-          const connectedNode = get().nodes.find(node => node.id == connection.target)
+        const connectedNode = get().nodes.find(node => node.id == connection.target)
 
-          switch (connectedNode?.type) {
-            case 'filter': {
-              const dataset = targetNode.data.fileData || []
-              const colums = Object.keys(dataset.length ? dataset[0] : [])
-              const newColums = colums.map(colum => {
-                return {
-                  value: colum,
-                  label: colum
-                }
-              })
-              set({
-                nodes: get().nodes.map(node =>
-                  node.id === connectedNode.id
-                    ? { ...node, data: { column: newColums, selectedColumn: null, condition: null } }
-                    : node
-                ),
-                // edges: addEdge(connection, get().edges),
-              });
+        switch (connectedNode?.type) {
+          case 'filter': {
+            const dataset = targetNode.data.fileData || []
+            const colums = Object.keys(dataset.length ? dataset[0] : [])
+            const newColums = colums.map(colum => {
+              return {
+                value: colum,
+                label: colum
+              }
+            })
+
+            set({
+              nodes: get().nodes.map(node =>
+                node.id === connectedNode.id
+                  ? { ...node, data: { column: newColums, selectedColumn: newColums[0].value, condition: null, datasource: dataset } }
+                  : node
+              ),
+              // edges: addEdge(connection, get().edges),
+            });
             // this.updateNode(connectedNode.id, { column: newColums, selectedColumn: null, condition: null })
-            }
           }
-        console.log("targetEdges-onConnect ",connectedNode)
+        }
+        console.log("targetEdges-onConnect ", connectedNode)
         break;
       }
     }
@@ -256,7 +257,7 @@ export const useStore = create<RFState>((set, get) => ({
               set({
                 nodes: get().nodes.map(node =>
                   node.id === connectedNode.id
-                    ? { ...node, data: { column: newColums, selectedColumn: null, condition: null } }
+                    ? { ...node, data: { column: newColums, selectedColumn: newColums[0].value, condition: null, datasource: dataset } }
                     : node
                 )
               })
