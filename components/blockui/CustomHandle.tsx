@@ -8,7 +8,7 @@ const selector = (s: { nodeInternals: Map<string, Node>, edges: Edge[] }) => ({
 });
 
 type CustomeHandleType = HandleProps & {
-  connectionLimit: number | ((obj: { node: Node, connectedEdges: Edge[] }) => boolean);
+  connectionLimit?: number | ((obj: { node: Node, connectedEdges: Edge[] }) => boolean);
   acceptType?: NodeTypes[];
 }
 
@@ -27,7 +27,7 @@ const CustomHandle = (props: CustomeHandleType) => {
       return connectedEdges.length < props.connectionLimit;
     }
 
-    if (typeof props.isConnectable === 'function') {
+    if (typeof props.connectionLimit === 'function') {
       const node = nodeInternals.get(nodeId);
       if (!node) return true
       const connectedEdges = getConnectedEdges([node], edges);
@@ -43,8 +43,9 @@ const CustomHandle = (props: CustomeHandleType) => {
         if (props.acceptType == undefined) return true
 
         const targetNode = nodes.find(node => node.type ? props.acceptType?.includes(node.type as NodeTypes) : true)!
-        return connection.target === targetNode.id
+        return props.type == "source" ? connection.target === targetNode.id : connection.source === targetNode.id
       }}
+      // onConnect={(params) => console.log('handle onConnect', params)}
       isConnectable={isHandleConnectable}></Handle>
   );
 };

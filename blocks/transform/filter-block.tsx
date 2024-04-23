@@ -1,4 +1,4 @@
-import React, { ChangeEvent, memo, useState } from 'react';
+import React, { ChangeEvent, memo, useEffect, useState } from 'react';
 import { Handle, useReactFlow, useStoreApi, Position, Connection, useNodes } from 'reactflow';
 import BlockTemplate from "@/components/blockui/Template";
 import { useStore } from "@/store/store";
@@ -46,6 +46,11 @@ export type FilterBlockData = {
 function Select({ value, nodeId, label, dataKey, options, isHandle }: { value: string, nodeId: string, label: string, dataKey: keyof FilterBlockData, options: { value: string, label: string }[], isHandle?: 'left' | 'right' }) {
   const { setNodes } = useReactFlow();
   const store = useStoreApi();
+  const [nodeOptions, setNodeOptions] = useState(options)
+
+  useEffect(() => {
+    setNodeOptions(options)
+  }, [options])
 
   const onChange = (evt: ChangeEvent<HTMLSelectElement>) => {
     const { nodeInternals } = store.getState();
@@ -74,7 +79,25 @@ function Select({ value, nodeId, label, dataKey, options, isHandle }: { value: s
           ))}
         </select>
         <div>
-          {isHandle && <CustomHandle acceptType={["filepicker",'filter']} connectionLimit={1} type="target" position={isHandle === 'left' ? Position.Left : Position.Right} id={nodeId} />}
+          {isHandle && <CustomHandle acceptType={["filepicker", 'filter']}
+            onConnect={(param) => {
+              console.log('on newOptions', param)
+              // const { getNodes } = store.getState();
+              // const nodes = getNodes()
+              // const targetNode = nodes.find(node => node.id === connect.target)
+              // const data = targetNode?.data as FilterBlockData
+              // const dataset = data.fileData || []
+              // const colums = Object.keys(dataset.length ? dataset[0] : [])
+              // const newOptions = colums.map(colum => {
+              //   return {
+              //     value: colum,
+              //     label: colum
+              //   }
+              // })
+              // console.log('newOptions', newOptions)
+              // setNodeOptions(newOptions)
+            }}
+            connectionLimit={1} type="target" position={isHandle === 'left' ? Position.Left : Position.Right} id={nodeId} />}
         </div>
       </div>
     </div>

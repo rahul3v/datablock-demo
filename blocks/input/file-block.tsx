@@ -5,6 +5,7 @@ import BlockTemplate from "@/components/blockui/Template";
 import { useStore } from "@/store/store";
 import { useShallow } from "zustand/react/shallow";
 import { RFState } from "@/store/store";
+import CustomHandle from "@/components/blockui/CustomHandle";
 
 export type FileBlockData = {
   fileData: null | []
@@ -63,7 +64,7 @@ function FileBlock({ id }: { id: string }) {
         }} />
       </div>
 
-      <Handle type="source" position={Position.Right} id={id} />
+      <CustomHandle acceptType={["exportfile", 'filter']} type="source" position={Position.Right} id={id} />
       <div ref={ref} className="absolute text-[.5rem] z-10 mt-3 text-white"></div>
     </>
   </BlockTemplate>
