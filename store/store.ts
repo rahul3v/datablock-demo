@@ -144,7 +144,7 @@ export const useStore = create<RFState>((set, get) => ({
             set({
               nodes: get().nodes.map(node =>
                 node.id === connectedNode.id
-                  ? { ...node, data: { column: newColums, selectedColumn: newColums[0].value, condition: null, datasource: dataset } }
+                  ? { ...node, data: { column: newColums, selectedColumn: newColums.length?newColums[0]?.value:null, condition: null, datasource: dataset } }
                   : node
               ),
               // edges: addEdge(connection, get().edges),
@@ -257,7 +257,7 @@ export const useStore = create<RFState>((set, get) => ({
               set({
                 nodes: get().nodes.map(node =>
                   node.id === connectedNode.id
-                    ? { ...node, data: { column: newColums, selectedColumn: newColums[0].value, condition: null, datasource: dataset } }
+                    ? { ...node, data: { column: newColums, selectedColumn: newColums.length?newColums[0]?.value:null, condition: null, datasource: dataset } }
                     : node
                 )
               })
