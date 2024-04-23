@@ -15,6 +15,10 @@
   left: -.75rem;
 }
 
+.custom-node__select .react-flow__handle-right {
+  right: -.75rem;
+}
+
 .react-flow__handle {
   height: 80%;
   border-radius: 0;

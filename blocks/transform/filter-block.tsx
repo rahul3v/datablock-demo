@@ -93,7 +93,7 @@ function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
   return (
     <BlockTemplate id={id} label="Filter" type={"filter"}>
       <>
-        <div className=' flex flex-col gap-2'>
+        <div className='flex flex-col gap-2'>
           {conected ? <>
             <div>
               <Select key={"column"} isHandle="left" nodeId={id} dataKey="column" label="Column" options={[]} value={data.column ? data.column : ''} />

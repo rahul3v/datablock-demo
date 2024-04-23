@@ -27,6 +27,7 @@ import NewFile from '@/components/NewFile';
 import SaveFile from '@/components/SaveFile';
 import { HistoryUi } from '@/components/appui/HistoryUi';
 import ExportFile from '@/components/ExportFile';
+import DevTools from '@/devtools/DevTools';
 
 const nodeTypes = {
   filepicker: FileBlock,
@@ -109,6 +110,7 @@ const OverviewFlow = () => {
             <MiniMap style={minimapStyle} zoomable pannable />
             <Controls />
             <Background color="#aaa" gap={16} />
+            <DevTools />
           </ReactFlow>
         </div>
         <div className='results'>

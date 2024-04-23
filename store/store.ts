@@ -170,8 +170,14 @@ export const useStore = create<RFState>((set, get) => ({
     const edge = { ...data, id };
 
     set({ edges: [edge, ...get().edges] });
+    connect(data.source, data.target);
   },
 
+  // onEdgesDelete(deleted:Edge[]) {
+  //   for ({ source, target } of deleted) {
+  //     disconnect(source, target);
+  //   }
+  // },
   deleteNode(id: string) {
     set({
       nodes: get().nodes.filter(node => node.id !== id)
@@ -189,4 +195,47 @@ export const useStore = create<RFState>((set, get) => ({
     });
   },
 
+  removeNodes(nodes: Node[]) {
+    for (const { id } of nodes) {
+      removeFilterNode(id)
+    }
+  },
 }));
+
+
+const customNodes = new Map();
+
+export function updateFilterNode(id: string, data: FilterBlockData) {
+  const node = customNodes.get(id);
+
+  for (const [key, val] of Object.entries(data)) {
+    if (node[key] instanceof AudioParam) {
+      node[key].value = val;
+    } else {
+      node[key] = val;
+    }
+  }
+}
+
+export function removeFilterNode(id: string) {
+  const node = customNodes.get(id);
+
+  node.disconnect();
+  node.stop?.();
+
+  customNodes.delete(id);
+}
+
+export function connect(sourceId:string, targetId:string) {
+  const source = customNodes.get(sourceId);
+  const target = customNodes.get(targetId);
+ 
+  source.connect(target);
+}
+
+export function disconnect(sourceId:string, targetId:string) {
+  const source = customNodes.get(sourceId);
+  const target = customNodes.get(targetId);
+
+  source.disconnect(target);
+}
