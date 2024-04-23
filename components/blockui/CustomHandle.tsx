@@ -23,8 +23,11 @@ const CustomHandle = (props: CustomeHandleType) => {
       const node = nodeInternals.get(nodeId);
       if (!node) return true
       const connectedEdges = getConnectedEdges([node], edges);
-
-      return connectedEdges.length < props.connectionLimit;
+      let countTypeLength = 0
+      connectedEdges.forEach(handle => {
+        countTypeLength += (handle[props.type] == props.id) ? 1 : 0
+      })
+      return countTypeLength < props.connectionLimit;
     }
 
     if (typeof props.connectionLimit === 'function') {
@@ -43,7 +46,7 @@ const CustomHandle = (props: CustomeHandleType) => {
         if (props.acceptType == undefined) return true
 
         const targetNode = nodes.find(node => node.type ? props.acceptType?.includes(node.type as NodeTypes) : true)!
-        return props.type == "source" ? connection.target === targetNode.id : connection.source === targetNode.id
+        return props.type === "source" ? connection.target === targetNode.id : connection.source === targetNode.id
       }}
       // onConnect={(params) => console.log('handle onConnect', params)}
       isConnectable={isHandleConnectable}></Handle>
