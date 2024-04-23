@@ -39,39 +39,19 @@ const options = [
 
 export type FilterBlockData = {
   condition: null | string,
-  column: null | string,
-  fileData?: { [key: string]: string }[]
+  column: null | { value: string, label: string }[],
+  selectedColumn: null | string;
+  dataset?: { [key: string]: string }[];
+  fileData?: { [key: string]: string }[];
 }
 
-function Select({ value, nodeId, label, dataKey, options, isHandle }: { value: string, nodeId: string, label: string, dataKey: keyof FilterBlockData, options: { value: string, label: string }[], isHandle?: 'left' | 'right' }) {
-  const { setNodes } = useReactFlow();
-  const store = useStoreApi();
-  const [nodeOptions, setNodeOptions] = useState(options)
-
-  useEffect(() => {
-    setNodeOptions(options)
-  }, [options])
-
-  const onChange = (evt: ChangeEvent<HTMLSelectElement>) => {
-    const { nodeInternals } = store.getState();
-    setNodes(
-      Array.from(nodeInternals.values()).map((node) => {
-        if (node.id === nodeId) {
-          node.data = {
-            ...node.data,
-            [dataKey]: evt.target.value,
-          };
-        }
-        return node;
-      })
-    );
-  };
+function Select({ value, nodeId, label, dataKey, options, isHandle, onChange }: { onChange: (val: string, datakey: keyof FilterBlockData) => void, value: string, nodeId: string, label: string, dataKey: keyof FilterBlockData, options: { value: string, label: string }[], isHandle?: 'left' | 'right' }) {
 
   return (
     <div className="custom-node__select relative">
       <div className='text-[10px]'>{label}</div>
       <div className='relative'>
-        <select className="nodrag px-2 py-1 w-full" onChange={onChange} value={value}>
+        <select className="nodrag px-2 py-1 w-full" onChange={(e) => onChange(e.currentTarget.value, dataKey)} value={value}>
           {options.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
@@ -80,23 +60,6 @@ function Select({ value, nodeId, label, dataKey, options, isHandle }: { value: s
         </select>
         <div>
           {isHandle && <CustomHandle acceptType={["filepicker", 'filter']}
-            onConnect={(param) => {
-              console.log('on newOptions', param)
-              // const { getNodes } = store.getState();
-              // const nodes = getNodes()
-              // const targetNode = nodes.find(node => node.id === connect.target)
-              // const data = targetNode?.data as FilterBlockData
-              // const dataset = data.fileData || []
-              // const colums = Object.keys(dataset.length ? dataset[0] : [])
-              // const newOptions = colums.map(colum => {
-              //   return {
-              //     value: colum,
-              //     label: colum
-              //   }
-              // })
-              // console.log('newOptions', newOptions)
-              // setNodeOptions(newOptions)
-            }}
             connectionLimit={1} type="target" position={isHandle === 'left' ? Position.Left : Position.Right} id={nodeId} />}
         </div>
       </div>
@@ -106,24 +69,29 @@ function Select({ value, nodeId, label, dataKey, options, isHandle }: { value: s
 const buttonStyle = `px-3 py-1 w-full rounded-xl text-white bg-orange-400	cursor-pointer`
 
 const selector = (id: string) => (store: RFState) => ({
+  columnDatas: store.nodes.find(node => node.id == id)?.data,
   setData: (data: FilterBlockData) => store.updateNode(id, data),
 });
 
 function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
 
   const [conected, setConected] = useState(true)
-  const { setData } = useStore(useShallow(selector(id)));
+  const { columnDatas: { colums: columnData, selectedColumn }, setData } = useStore(useShallow(selector(id)));
+
+  function onChange(value: string, datakey: keyof FilterBlockData) {
+    setData({ ...data, [datakey]: value })
+  }
 
   return (
     <BlockTemplate id={id} label="Filter" type={"filter"}>
       <>
         <div className='flex flex-col gap-2'>
-          {conected ? <>
-            <div>
-              <Select key={"column"} isHandle="left" nodeId={id} dataKey="column" label="Column" options={[]} value={data.column ? data.column : ''} />
-            </div>
 
-            <Select key={"condition"} nodeId={id} dataKey="condition" label="Condition" options={options} value={data.condition ? data.condition : ''} />
+          <div>
+            <Select key={"column"} isHandle="left" onChange={onChange} nodeId={id} dataKey="selectedColumn" label="Column" options={columnData ? columnData : []} value={selectedColumn} />
+          </div>
+          {conected ? <>
+            <Select key={"condition"} nodeId={id} dataKey="condition" label="Condition" onChange={onChange} options={options} value={data.condition ? data.condition : ''} />
             <input className='mb-2 w-full px-1 border-gray-400 border rounded-sm' type="text" />
             <button className={buttonStyle}>Run</button>
           </>

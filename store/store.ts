@@ -120,6 +120,7 @@ export const useStore = create<RFState>((set, get) => ({
     set({ edges });
   },
   onConnect: (connection: Connection) => {
+    console.log("connection",connection)
     set({
       edges: addEdge(connection, get().edges),
     });
@@ -152,13 +153,16 @@ export const useStore = create<RFState>((set, get) => ({
     }
     set({ nodes: [...get().nodes, { id, type, data, position }] });
   },
+  
   onNodesChange(changes) {
+    console.log('onNodesChange',changes) // logic targeted area
     set({
       nodes: applyNodeChanges(changes, get().nodes),
     });
   },
 
   onEdgesChange(changes) {
+    console.log('onEdgesChange',changes) // logic targeted area
     set({
       edges: applyEdgeChanges(changes, get().edges),
     });
@@ -167,7 +171,7 @@ export const useStore = create<RFState>((set, get) => ({
   addEdge(data) {
     const id = nanoid(6);
     const edge = { ...data, id };
-
+    
     set({ edges: [edge, ...get().edges] });
     connect(data.source, data.target);
   },
@@ -177,6 +181,12 @@ export const useStore = create<RFState>((set, get) => ({
   //     disconnect(source, target);
   //   }
   // },
+  
+  // onEdgesDelete:(edges:Edge[])=>{
+  //   console.log("edges",edges)
+  //   set({ edges });
+  // },
+
   deleteNode(id: string) {
     set({
       nodes: get().nodes.filter(node => node.id !== id)
@@ -184,6 +194,48 @@ export const useStore = create<RFState>((set, get) => ({
   },
 
   updateNode(id, data) {
+    console.log('updateNode',id, data) // logic targeted area
+    
+    const targetNode = get().nodes.find(node=>node.id==id)
+
+    switch (targetNode?.type){
+      case 'filepicker': {
+        //source
+        const targetEdges = get().edges.filter(edge=>edge.source == id)
+        targetEdges.forEach((edge)=>{
+          const connectedNode = get().nodes.find(node=>node.id==edge.target)
+          
+          switch (connectedNode?.type){
+            case 'filter':{
+              const dataset = data.fileData || []
+              const colums = Object.keys(dataset.length ? dataset[0] : [])
+              const newColums = colums.map(colum => {
+                return {
+                  value: colum,
+                  label: colum
+                }
+              })
+              // connectedNode.data.column = newColums
+
+              set({
+                nodes: get().nodes.map(node =>
+                  node.id === connectedNode.id
+                    ? { ...node, data: { ...node.data, colums:newColums } }
+                    : node
+                )
+              })
+            }
+          }
+        })
+        // console.log("targetEdges",targetEdges)
+        break;
+      }
+      // case 'filter': {
+      //   const targetEdges = get().edges.filter(edge=>edge.target == id)
+      //   console.log("targetEdges",targetEdges)
+      //   break;
+      // }
+    }
     set({
       nodes: get().nodes.map(node =>
         node.id === id
@@ -194,11 +246,11 @@ export const useStore = create<RFState>((set, get) => ({
     });
   },
 
-  removeNodes(nodes: Node[]) {
-    for (const { id } of nodes) {
-      removeFilterNode(id)
-    }
-  },
+  // removeNodes(nodes: Node[]) {
+  //   for (const { id } of nodes) {
+  //     removeFilterNode(id)
+  //   }
+  // },
 }));
 
 
