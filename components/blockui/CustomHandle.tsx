@@ -41,13 +41,15 @@ const CustomHandle = (props: CustomeHandleType) => {
   }, [nodeInternals, edges, nodeId, props.connectionLimit]);
 
   return (
-    <Handle {...props}
+    <Handle {...props} className={!isHandleConnectable?"custom_handle-connection-full":''}
       isValidConnection={(connection) => {
         if (props.acceptType == undefined) return true
 
-        const targetNode = nodes.find(node => node.type ? props.acceptType?.includes(node.type as NodeTypes) : true)!
+        const targetNode = nodes.find(node => (props.type === "source"?node.id == connection.target:node.id == connection.source) ? props.acceptType?.includes(node.type as NodeTypes) : false)!
+        // console.log('connection',connection, targetNode)
         return props.type === "source" ? connection.target === targetNode.id : connection.source === targetNode.id
       }}
+      data-full={!isHandleConnectable}
       // onConnect={(params) => console.log('handle onConnect', params)}
       isConnectable={isHandleConnectable}></Handle>
   );
