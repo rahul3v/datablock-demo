@@ -4,6 +4,7 @@ import BlockTemplate from "@/components/blockui/Template";
 import { useStore } from "@/store/store";
 import { useShallow } from "zustand/react/shallow";
 import { RFState } from "@/store/store";
+import CustomHandle from '@/components/blockui/CustomHandle';
 
 const options = [
   {
@@ -73,7 +74,7 @@ function Select({ value, nodeId, label, dataKey, options, isHandle }: { value: s
           ))}
         </select>
         <div>
-          {isHandle && <Handle type="target" position={isHandle === 'left' ? Position.Left : Position.Right} id={nodeId} />}
+          {isHandle && <CustomHandle connectionLimit={1} type="target" position={isHandle === 'left' ? Position.Left : Position.Right} id={nodeId} />}
         </div>
       </div>
     </div>
