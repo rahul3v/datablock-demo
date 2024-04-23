@@ -69,14 +69,13 @@ function Select({ value, nodeId, label, dataKey, options, isHandle, onChange }: 
 const buttonStyle = `px-3 py-1 w-full rounded-xl text-white bg-orange-400	cursor-pointer`
 
 const selector = (id: string) => (store: RFState) => ({
-  columnDatas: store.nodes.find(node => node.id == id)?.data,
   setData: (data: FilterBlockData) => store.updateNode(id, data),
 });
 
 function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
 
-  const [conected, setConected] = useState(true)
-  const { columnDatas: { colums: columnData, selectedColumn }, setData } = useStore(useShallow(selector(id)));
+  const [conected, setConected] = useState(true);
+  const { setData } = useStore(useShallow(selector(id)));
 
   function onChange(value: string, datakey: keyof FilterBlockData) {
     setData({ ...data, [datakey]: value })
@@ -88,7 +87,7 @@ function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
         <div className='flex flex-col gap-2'>
 
           <div>
-            <Select key={"column"} isHandle="left" onChange={onChange} nodeId={id} dataKey="selectedColumn" label="Column" options={columnData ? columnData : []} value={selectedColumn} />
+            <Select key={"column"} isHandle="left" onChange={onChange} nodeId={id} dataKey="selectedColumn" label="Column" options={data.column ? data.column : []} value={data.selectedColumn ? data.selectedColumn : ''} />
           </div>
           {conected ? <>
             <Select key={"condition"} nodeId={id} dataKey="condition" label="Condition" onChange={onChange} options={options} value={data.condition ? data.condition : ''} />

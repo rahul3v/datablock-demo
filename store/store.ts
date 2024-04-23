@@ -215,15 +215,8 @@ export const useStore = create<RFState>((set, get) => ({
                   label: colum
                 }
               })
-              // connectedNode.data.column = newColums
 
-              set({
-                nodes: get().nodes.map(node =>
-                  node.id === connectedNode.id
-                    ? { ...node, data: { ...node.data, colums:newColums } }
-                    : node
-                )
-              })
+              this.updateNode(connectedNode.id,{column:newColums, selectedColumn:null, condition:null})
             }
           }
         })
