@@ -1,5 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
+import { useState } from 'react';
 
 const BLOCKS = [
   {
@@ -57,8 +58,9 @@ const BLOCKS = [
 
 
 export function Blocks() {
+  const [open, setOpen] = useState(false)
 
-  return <Dialog.Root>
+  return <Dialog.Root open={open} onOpenChange={setOpen}>
     <Dialog.Trigger>
       <div className='absolute top-4 left-4 px-2 py-1 rounded-xl border-violet-950 z-10 bg-indigo-800 cursor-pointer'>+ block</div>
     </Dialog.Trigger>

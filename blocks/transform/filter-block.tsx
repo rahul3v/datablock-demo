@@ -78,7 +78,6 @@ function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
   const [isComputing, setComputing] = useState(false)
   const { setData } = useStore(useShallow(selector(id)));
   const inputRef = useRef<HTMLInputElement>(null)
-  const dataRef = useRef<HTMLDivElement>(null);
 
   function onChange(value: string, datakey: keyof FilterBlockData) {
     setData({ ...data, [datakey]: value })
@@ -106,7 +105,7 @@ function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
       }
     }
     //@ts-ignore
-    dataRef.current!.innerHTML = fileData ? `[DATASET] ${fileData.length} rows | ${Object.keys(data.datasource[0]).length} columns` :''
+    // dataRef.current!.innerHTML = 
     // console.log('fileeeeee',fileData,data)
     setData({ ...data, fileData })
     setComputing(false)
@@ -128,7 +127,9 @@ function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
           }
           <Handle type="source" position={Position.Right} id={id} />
         </div>
-        <div ref={dataRef} className="absolute text-[.5rem] z-10 mt-3 text-white"></div>
+        <div className="absolute text-[.5rem] z-10 mt-3 text-white">
+          {data.fileData ? `[DATASET] ${data.fileData.length} rows | ${data.datasource?.length ? Object.keys(data.datasource[0]).length : 0} columns` : ''}
+        </div>
       </>
     </BlockTemplate>
   );

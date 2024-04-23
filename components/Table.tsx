@@ -18,6 +18,9 @@ export function Table({ dataset }: { dataset?: TableData[] | null }) {
   const keys = Object.keys(hasData ? dataset[0] : DummyData[0])
   const rows = hasData ? dataset : DummyData
 
+  if(!hasData)
+    return <div className='mb-2'>No Data Found </div>
+
   return <>
     {!hasData && <div className='mb-2'>Dummy Data </div>}
     <div className="flex overflow-auto max-h-[300px]">
