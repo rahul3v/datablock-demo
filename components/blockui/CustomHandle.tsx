@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { type HandleProps, Edge, Node, getConnectedEdges, Handle, useNodeId, useStore, useNodes } from 'reactflow';
+import { type NodeTypes } from '@/blocks'
 
 const selector = (s: { nodeInternals: Map<string, Node>, edges: Edge[] }) => ({
   nodeInternals: s.nodeInternals,
@@ -7,8 +8,8 @@ const selector = (s: { nodeInternals: Map<string, Node>, edges: Edge[] }) => ({
 });
 
 type CustomeHandleType = HandleProps & {
-  connectionLimit: number | ((obj: { node: Node, connectedEdges: Edge[] }) => boolean)
-  acceptType?: string[]
+  connectionLimit: number | ((obj: { node: Node, connectedEdges: Edge[] }) => boolean);
+  acceptType?: NodeTypes[];
 }
 
 const CustomHandle = (props: CustomeHandleType) => {
@@ -41,7 +42,7 @@ const CustomHandle = (props: CustomeHandleType) => {
       isValidConnection={(connection) => {
         if (props.acceptType == undefined) return true
 
-        const targetNode = nodes.find(node => node.type ? props.acceptType?.includes(node.type) : true)!
+        const targetNode = nodes.find(node => node.type ? props.acceptType?.includes(node.type as NodeTypes) : true)!
         return connection.target === targetNode.id
       }}
       isConnectable={isHandleConnectable}></Handle>

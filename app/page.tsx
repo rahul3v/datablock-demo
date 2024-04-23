@@ -9,10 +9,6 @@ import ReactFlow, {
   ReactFlowProvider,
 } from 'reactflow';
 
-import FileBlock from '@/blocks/input/file-block';
-import FilterBlock from '@/blocks/transform/filter-block';
-import ExportBlock from '@/blocks/output/export-block';
-
 import 'reactflow/dist/style.css';
 import '@/style/overview.css';
 import '@/style/interface.css';
@@ -28,12 +24,7 @@ import SaveFile from '@/components/SaveFile';
 import { HistoryUi } from '@/components/appui/HistoryUi';
 import ExportFile from '@/components/ExportFile';
 import DevTools from '@/devtools/DevTools';
-
-const nodeTypes = {
-  filepicker: FileBlock,
-  filter: FilterBlock,
-  exportfile: ExportBlock,
-};
+import { nodeTypes } from '@/blocks';
 
 const minimapStyle = {
   height: 100,

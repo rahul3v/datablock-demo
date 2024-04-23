@@ -6,8 +6,7 @@ import { getLocalStorageData, setLocalStorage } from '@/lib/data-block.lib';
 
 import { type FileBlockData } from '@/blocks/input/file-block'
 import { type FilterBlockData } from '@/blocks/transform/filter-block';
-
-export type NodeType = 'filter' | 'filepicker' | 'exportfile'
+import { type NodeTypes } from '@/blocks';
 
 export type WorkspaceType = {
   name: string,
@@ -38,7 +37,7 @@ export type RFState = {
   setNewWorkspace: () => void;
   saveWorkspace: () => void;
   loadNewWorkspace: (workspace: WorkspaceType, id: number) => void;
-  createNode: (type: NodeType) => void;
+  createNode: (type: NodeTypes) => void;
   addEdge: (data: Edge) => void;
   deleteNode: (id: string) => void;
   updateNode: (id: string, data: FileBlockData | FilterBlockData) => void;
