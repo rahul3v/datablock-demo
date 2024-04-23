@@ -28,7 +28,7 @@ function ExportBlock({ id }: { id: string }) {
         exportJsonData(dataset, 'datset-file-' + Date.now())
       }
     }
-
+    alert('No Data found')
   }
 
   return <BlockTemplate id={id} label="Export Data" type={"exportfile"}>
