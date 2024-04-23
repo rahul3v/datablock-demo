@@ -26,7 +26,7 @@ function FileBlock({ id }: { id: string }) {
         Choose a dataset file <b>(.json, .csv)</b>
       </div>
       <div>
-        <input type="file" accept=".json, .csv" onChange={(event) => {
+        <input type="file" className="max-w-[240px]" accept=".json, .csv" onChange={(event) => {
           if (!event.target.files) return null
 
           const file = event.target.files[0];
@@ -58,8 +58,12 @@ function FileBlock({ id }: { id: string }) {
               }
             }
           };
-
-          reader.readAsText(file);
+          try {
+            reader.readAsText(file);
+          } catch (e){
+            alert("wronng file format"); return
+          }
+          
 
         }} />
       </div>
