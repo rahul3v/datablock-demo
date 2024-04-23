@@ -106,7 +106,7 @@ function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
       }
     }
     //@ts-ignore
-    dataRef.current!.innerHTML = fileData === null ? '' : `[DATASET] ${fileData.length} rows | ${Object.keys(fileData[0]).length} columns`
+    dataRef.current!.innerHTML = fileData ? `[DATASET] ${fileData.length} rows | ${Object.keys(data.datasource[0]).length} columns` :''
     // console.log('fileeeeee',fileData,data)
     setData({ ...data, fileData })
     setComputing(false)
