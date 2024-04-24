@@ -92,16 +92,16 @@ function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
     }
     if (data.selectedColumn) {
       if (data.condition == "5") {
-        fileData = data.datasource?.filter((column => column[data.selectedColumn as string] === inputRef.current?.value))
+        fileData = data.datasource?.filter((column => String(column[data.selectedColumn as string]) === inputRef.current?.value))
       }
       if (data.condition == "6") {
-        fileData = data.datasource?.filter((column => column[data.selectedColumn as string] !== inputRef.current?.value))
+        fileData = data.datasource?.filter((column => String(column[data.selectedColumn as string]) !== inputRef.current?.value))
       }
       if (data.condition == "7") {
-        fileData = data.datasource?.filter(column => column[data.selectedColumn as string].includes(String(inputRef.current?.value)))
+        fileData = data.datasource?.filter(column => String(column[data.selectedColumn as string]).includes(String(inputRef.current?.value)))
       }
       if (data.condition == "8") {
-        fileData = data.datasource?.filter(column => !column[data.selectedColumn as string].includes(String(inputRef.current?.value)))
+        fileData = data.datasource?.filter(column => !String(column[data.selectedColumn as string]).includes(String(inputRef.current?.value)))
       }
     }
     //@ts-ignore
