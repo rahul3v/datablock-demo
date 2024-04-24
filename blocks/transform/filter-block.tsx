@@ -59,7 +59,7 @@ function Select({ value, nodeId, label, dataKey, options, isHandle, onChange }: 
           ))}
         </select>
         <div>
-          {isHandle && <CustomHandle acceptType={["filepicker", 'filter']}
+          {isHandle && <CustomHandle acceptType={["filepicker", 'filter', 'exampledata']}
             connectionLimit={1} type="target" position={isHandle === 'left' ? Position.Left : Position.Right} id={nodeId} />}
         </div>
       </div>

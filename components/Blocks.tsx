@@ -17,7 +17,6 @@ const BLOCKS = [
         detail: 'Some example data for playing around with data blocks.',
         input: '-',
         output: 'Dataset, Geojson',
-        active: false
       }
     ]
   },
@@ -79,7 +78,9 @@ export function Blocks() {
               <div className='types grid grid-cols-3 gap-4'>
                 {types.map((type, j) => {
                   const { label, detail, input, output, active=true } = type
-                  return <div key={j} className={`block-type shadow-md px-2 py-2 rounded-md bg-[#333154] flex flex-col gap-2 ${!active?'cursor-not-allowed opacity-45':'cursor-pointer '}`}>
+                  return <div key={j} onClick={()=>{
+                    setOpen(false)
+                  }} className={`block-type shadow-md px-2 py-2 rounded-md bg-[#333154] flex flex-col gap-2 ${!active?'cursor-not-allowed opacity-45':'cursor-pointer '}`}>
                     <div className='font-bold capitalize text-[14px]'>{label}</div>
                     <div className='text-[10px] opacity-75'>{detail}</div>
                     <br />

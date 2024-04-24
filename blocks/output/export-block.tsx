@@ -39,7 +39,7 @@ function ExportBlock({ id }: { id: string }) {
         <button className={buttonStyle} onClick={() => { getDataset("csv") }}>Export CSV</button>
         <button className={buttonStyle} onClick={() => { getDataset("json") }}>Export JSON</button>
       </div>
-      <CustomHandle connectionLimit={1} type="target" acceptType={["filter", "filepicker"]} position={Position.Left} id={id} />
+      <CustomHandle connectionLimit={1} type="target" acceptType={["filter", "filepicker",'exampledata']} position={Position.Left} id={id} />
     </>
   </BlockTemplate>
 }

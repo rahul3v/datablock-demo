@@ -8,7 +8,7 @@ import { RFState } from "@/store/store";
 import CustomHandle from "@/components/blockui/CustomHandle";
 
 export type FileBlockData = {
-  fileData: null | []
+  fileData: null | { [key: string]: string }[]
 }
 
 const selector = (id: string) => (store: RFState) => ({
@@ -60,10 +60,10 @@ function FileBlock({ id }: { id: string }) {
           };
           try {
             reader.readAsText(file);
-          } catch (e){
+          } catch (e) {
             alert("wronng file format"); return
           }
-          
+
 
         }} />
       </div>

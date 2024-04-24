@@ -127,6 +127,7 @@ export const useStore = create<RFState>((set, get) => ({
 
     //source
     switch (targetNode?.type) {
+      case "exampledata":
       case 'filepicker': {
         const connectedNode = get().nodes.find(node => node.id == connection.target)
 
@@ -144,7 +145,7 @@ export const useStore = create<RFState>((set, get) => ({
             set({
               nodes: get().nodes.map(node =>
                 node.id === connectedNode.id
-                  ? { ...node, data: { column: newColums, selectedColumn: newColums.length?newColums[0]?.value:null, condition: null, datasource: dataset } }
+                  ? { ...node, data: { column: newColums, selectedColumn: newColums.length ? newColums[0]?.value : null, condition: null, datasource: dataset } }
                   : node
               ),
               // edges: addEdge(connection, get().edges),
@@ -179,6 +180,12 @@ export const useStore = create<RFState>((set, get) => ({
         };
         break;
       }
+      case 'exampledata': {
+        data = <FileBlockData>{
+          fileData: null
+        };
+        break;
+      }
       case 'exportfile': {
         data = {
 
@@ -199,13 +206,13 @@ export const useStore = create<RFState>((set, get) => ({
 
   onEdgesChange(changes) {
     console.log('onEdgesChange', changes) // logic targeted area
-    changes.forEach(change=>{
-      const {type} = change
-      if(type==='remove'){
+    changes.forEach(change => {
+      const { type } = change
+      if (type === 'remove') {
         // 
       }
     })
-    
+
     set({
       edges: applyEdgeChanges(changes, get().edges),
     });
@@ -243,6 +250,7 @@ export const useStore = create<RFState>((set, get) => ({
     const targetNode = get().nodes.find(node => node.id == id)
 
     switch (targetNode?.type) {
+      case "exampledata":
       case 'filepicker': {
         //source
         const targetEdges = get().edges.filter(edge => edge.source == id)
@@ -264,7 +272,7 @@ export const useStore = create<RFState>((set, get) => ({
               set({
                 nodes: get().nodes.map(node =>
                   node.id === connectedNode.id
-                    ? { ...node, data: { column: newColums, selectedColumn: newColums.length?newColums[0]?.value:null, condition: null, datasource: dataset } }
+                    ? { ...node, data: { column: newColums, selectedColumn: newColums.length ? newColums[0]?.value : null, condition: null, datasource: dataset } }
                     : node
                 )
               })

@@ -45,6 +45,7 @@ const selector = (store: RFState) => ({
   setName: store.setName,
   addFilter: () => store.createNode('filter'),
   addFile: () => store.createNode('filepicker'),
+  addExample: () => store.createNode('exampledata'),
   addExportFile: () => store.createNode('exportfile')
 });
 
@@ -93,6 +94,9 @@ const OverviewFlow = () => {
               </button>
               <button className={buttonStyle} onClick={store.addExportFile}>
                 Add Export
+              </button>
+              <button className={buttonStyle} onClick={store.addExample}>
+                Add Example
               </button>
             </Panel>
             <Panel position="bottom-left" className={'space-x-4 translate-x-12'} >
