@@ -1,7 +1,7 @@
 # Datablock Demo
 
 <p align="center">
-  <img alt="Sample View" src="screenshots/app.png" width="80%" />
+  <img alt="Sample View" src="screenshots/app.gif" width="80%" />
 </p>
 
 This is a DataBlock based project based on `React-flow`, check [Live Demo](https://datablock-demo.vercel.app/).
