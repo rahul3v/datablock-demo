@@ -199,6 +199,13 @@ export const useStore = create<RFState>((set, get) => ({
 
   onEdgesChange(changes) {
     console.log('onEdgesChange', changes) // logic targeted area
+    changes.forEach(change=>{
+      const {type} = change
+      if(type==='remove'){
+        // 
+      }
+    })
+    
     set({
       edges: applyEdgeChanges(changes, get().edges),
     });

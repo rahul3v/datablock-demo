@@ -28,6 +28,7 @@ export function Table({ dataset }: { dataset?: TableData[] | null }) {
         <table className="text-sm text-left rtl:text-right text-gray-500 realdive">
           <thead className="text-xs text-gray-700 uppercase bg-[#333154] sticky top-0">
             <tr>
+            <th scope="col" className="text-white px-6 py-2"><div className='invisible'>S.No</div></th>
               {
                 keys.map(key => {
                   return <th scope="col" className="text-white px-6 py-2" key={key}>{key}</th>
@@ -39,6 +40,7 @@ export function Table({ dataset }: { dataset?: TableData[] | null }) {
             {
               rows.map((row, i) => {
                 return <tr className="border-b bg-[#222138] border-[#333154]" key={i}>
+                  <td className="px-6 py-1">{i+1}</td>
                   {keys.map(key => {
                     return <td className="px-6 py-1" key={key}>{row[key]}</td>
                   })
