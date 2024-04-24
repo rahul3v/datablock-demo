@@ -17,6 +17,7 @@ const BLOCKS = [
         detail: 'Some example data for playing around with data blocks.',
         input: '-',
         output: 'Dataset, Geojson',
+        active: false
       }
     ]
   },
@@ -34,12 +35,14 @@ const BLOCKS = [
         detail: 'Merges two data sets based on the given column names.',
         input: 'Dataset, Geojson',
         output: 'Dataset',
+        active: false
       },
       {
         label: 'sort',
         detail: 'Sorts data based on a given column.',
         input: 'Dataset',
         output: 'Dataset',
+        active: false
       }
     ]
   },
@@ -75,8 +78,8 @@ export function Blocks() {
               <div className='label font-bold capitalize mb-2'>{label}</div>
               <div className='types grid grid-cols-3 gap-4'>
                 {types.map((type, j) => {
-                  const { label, detail, input, output } = type
-                  return <div key={j} className='block-type shadow-md px-2 py-2 rounded-md cursor-pointer bg-[#333154] flex flex-col gap-2'>
+                  const { label, detail, input, output, active=true } = type
+                  return <div key={j} className={`block-type shadow-md px-2 py-2 rounded-md bg-[#333154] flex flex-col gap-2 ${!active?'cursor-not-allowed opacity-45':'cursor-pointer '}`}>
                     <div className='font-bold capitalize text-[14px]'>{label}</div>
                     <div className='text-[10px] opacity-75'>{detail}</div>
                     <br />
