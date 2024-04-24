@@ -71,14 +71,14 @@ export const useStore = create<RFState>((set, get) => ({
 
   saveWorkspace() {
     const filteredNodes = structuredClone(this.nodes)
-    filteredNodes.forEach(({data})=>{
-      if('fileData' in data){
+    filteredNodes.forEach(({ data }) => {
+      if ('fileData' in data) {
         data.fileData = null
       }
-      if('datasource' in data){
+      if ('datasource' in data) {
         data.datasource = null
       }
-      if('column' in data){
+      if ('column' in data) {
         data.column = null
       }
     })
@@ -220,10 +220,39 @@ export const useStore = create<RFState>((set, get) => ({
   onEdgesChange(changes) {
     console.log('onEdgesChange', changes) // logic targeted area
     changes.forEach(change => {
-      const { type } = change
+      if (change.type === 'remove') {
+        const edgeConnection = get().edges.find((edge) => edge.id == change.id)
+        if (edgeConnection) {
+          // console.log('idddEdge', edgeConnection)
+          const id = edgeConnection.source
+          const targetNode = get().nodes.find(node => node.id == id)
+          
+          //source
+    switch (targetNode?.type) {
+      case "exampledata":
+      case "filter":
+      case 'filepicker': {
+        const connectedNode = get().nodes.find(node => node.id == edgeConnection.target)
 
-      if (type === 'remove') {
-        // const 
+        switch (connectedNode?.type) {
+          case 'filter': {
+            set({
+              nodes: get().nodes.map(node =>
+                node.id === connectedNode.id
+                  ? { ...node, data: { column: null, selectedColumn: null, condition: null, datasource: null, fileData:null } }
+                  : node
+              ),
+              // edges: addEdge(connection, get().edges),
+            });
+            // this.updateNode(connectedNode.id, { column: newColums, selectedColumn: null, condition: null })
+          }
+        }
+        console.log("targetEdges-onConnect ", connectedNode)
+        break;
+      }
+    }
+        }
+
       }
     })
 
