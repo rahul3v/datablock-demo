@@ -24,12 +24,14 @@ function ExampleDataBlock({ id }: { id: string }) {
   },[])
   return <BlockTemplate id={id} label="Example Data" type={"exampledata"}>
     <>
-      <div className="py-2">
+      <div className="py-2 min-w-[130px]">
         <b>Example Dataset</b>
       </div>
 
       <CustomHandle acceptType={["exportfile", 'filter']} type="source" position={Position.Right} id={id} />
-      <div className="absolute text-[.5rem] z-10 mt-3 text-white"></div>
+      <div className="absolute text-[.5rem] z-10 mt-3 text-white">
+      {`[DATASET] ${DATA.length} rows | ${Object.keys(DATA[0]).length} columns`}
+      </div>
     </>
   </BlockTemplate>
 }
