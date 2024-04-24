@@ -1,6 +1,8 @@
+import { RFState, useStore } from '@/store/store';
 import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 import { useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 
 const BLOCKS = [
   {
@@ -11,12 +13,14 @@ const BLOCKS = [
         detail: 'Handles csv, json, geojson or topojson files.',
         input: '-',
         output: 'Dataset, Geojson',
+        functionName: 'addFile'
       },
       {
         label: 'Example Data',
         detail: 'Some example data for playing around with data blocks.',
         input: '-',
         output: 'Dataset, Geojson',
+        functionName: 'addExample'
       }
     ]
   },
@@ -28,6 +32,7 @@ const BLOCKS = [
         detail: 'Groups a data set based on a given column name.',
         input: 'Dataset',
         output: 'Dataset',
+        functionName: 'addFilter'
       },
       {
         label: 'merge',
@@ -53,14 +58,23 @@ const BLOCKS = [
         detail: 'Lets you export data as csv, json or geojson.',
         input: 'Dataset, Geojson, Topojson, Object',
         output: '-',
+        functionName: 'addExportFile'
       },
     ]
   }
 ]
 
+const selector = (store: RFState) => ({
+  addFilter: () => store.createNode('filter'),
+  addFile: () => store.createNode('filepicker'),
+  addExample: () => store.createNode('exampledata'),
+  addExportFile: () => store.createNode('exportfile')
+});
+
 
 export function Blocks() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+  const store = useStore(useShallow(selector));
 
   return <Dialog.Root open={open} onOpenChange={setOpen}>
     <Dialog.Trigger>
@@ -77,10 +91,16 @@ export function Blocks() {
               <div className='label font-bold capitalize mb-2'>{label}</div>
               <div className='types grid grid-cols-3 gap-4'>
                 {types.map((type, j) => {
-                  const { label, detail, input, output, active=true } = type
-                  return <div key={j} onClick={()=>{
+                  const { label, detail, input, output, active = true, functionName = null } = type
+                  return <div key={j} onClick={() => {
+                    if (functionName) {
+                      //@ts-ignore
+                      store[functionName]()
+                    }
+
+
                     setOpen(false)
-                  }} className={`block-type shadow-md px-2 py-2 rounded-md bg-[#333154] flex flex-col gap-2 ${!active?'cursor-not-allowed opacity-45':'cursor-pointer '}`}>
+                  }} className={`block-type shadow-md px-2 py-2 rounded-md bg-[#333154] flex flex-col gap-2 ${!active ? 'cursor-not-allowed opacity-45' : 'cursor-pointer '}`}>
                     <div className='font-bold capitalize text-[14px]'>{label}</div>
                     <div className='text-[10px] opacity-75'>{detail}</div>
                     <br />
