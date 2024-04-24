@@ -128,6 +128,7 @@ export const useStore = create<RFState>((set, get) => ({
     //source
     switch (targetNode?.type) {
       case "exampledata":
+      case "filter":
       case 'filepicker': {
         const connectedNode = get().nodes.find(node => node.id == connection.target)
 
@@ -208,8 +209,9 @@ export const useStore = create<RFState>((set, get) => ({
     console.log('onEdgesChange', changes) // logic targeted area
     changes.forEach(change => {
       const { type } = change
+
       if (type === 'remove') {
-        // 
+        // const 
       }
     })
 
@@ -234,8 +236,12 @@ export const useStore = create<RFState>((set, get) => ({
   // },
 
   // onEdgesDelete:(edges:Edge[])=>{
-  //   console.log("edges",edges)
+  //   console.log("edgesss",edges)
   //   set({ edges });
+  // },
+
+  // onEdgeUpdate(oldEdge: Edge, newConnection: Connection ){
+
   // },
 
   deleteNode(id: string) {
@@ -251,6 +257,7 @@ export const useStore = create<RFState>((set, get) => ({
 
     switch (targetNode?.type) {
       case "exampledata":
+      case "filter":
       case 'filepicker': {
         //source
         const targetEdges = get().edges.filter(edge => edge.source == id)
