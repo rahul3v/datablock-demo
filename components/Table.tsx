@@ -42,7 +42,7 @@ export function Table({ dataset }: { dataset?: TableData[] | null }) {
                 return <tr className="border-b bg-[#222138] border-[#333154]" key={i}>
                   <td className="px-6 py-1">{i+1}</td>
                   {keys.map(key => {
-                    return <td className="px-6 py-1" key={key}>{row[key]}</td>
+                    return <td className="px-6 py-1" key={key}>{JSON.stringify(row[key])}</td>
                   })
                   }
                 </tr>
