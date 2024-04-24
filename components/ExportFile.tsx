@@ -6,9 +6,21 @@ import React from 'react'
 export default function ExportFile() {
   const store = useStore()
   return (<div className="flex gap-1 cursor-pointer" onClick={() => {
+    const filteredNodes = structuredClone(store.nodes)
+    filteredNodes.forEach(({data})=>{
+      if('fileData' in data){
+        data.fileData = null
+      }
+      if('datasource' in data){
+        data.datasource = null
+      }
+      if('column' in data){
+        data.column = null
+      }
+    })
     const data: WorkspaceType[] = [{
       name: store.name,
-      nodes: store.nodes,
+      nodes: filteredNodes,
       edges: store.edges,
       creationDate: store.createdDate,
       updateDate: store.updatedDate

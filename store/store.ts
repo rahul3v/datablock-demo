@@ -70,9 +70,21 @@ export const useStore = create<RFState>((set, get) => ({
   },
 
   saveWorkspace() {
+    const filteredNodes = structuredClone(this.nodes)
+    filteredNodes.forEach(({data})=>{
+      if('fileData' in data){
+        data.fileData = null
+      }
+      if('datasource' in data){
+        data.datasource = null
+      }
+      if('column' in data){
+        data.column = null
+      }
+    })
     const data: WorkspaceType = {
       name: this.name,
-      nodes: this.nodes,
+      nodes: filteredNodes,
       edges: this.edges,
       creationDate: this.createdDate,
       updateDate: Date.now()
