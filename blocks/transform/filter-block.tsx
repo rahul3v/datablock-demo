@@ -90,7 +90,7 @@ function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
     if (data.condition == "") {
       fileData = data.datasource
     }
-    if (data.selectedColumn) {
+    if (data.selectedColumn && inputRef.current?.value) {
       if (data.condition == "5") {
         fileData = data.datasource?.filter((column => String(column[data.selectedColumn as string]) === inputRef.current?.value))
       }
@@ -103,6 +103,8 @@ function FilterBlock({ id, data }: { id: string, data: FilterBlockData }) {
       if (data.condition == "8") {
         fileData = data.datasource?.filter(column => !String(column[data.selectedColumn as string]).includes(String(inputRef.current?.value)))
       }
+    } else {
+      fileData = data.datasource
     }
     //@ts-ignore
     // dataRef.current!.innerHTML = 
