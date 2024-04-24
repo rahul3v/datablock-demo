@@ -66,7 +66,7 @@ function Select({ value, nodeId, label, dataKey, options, isHandle, onChange }: 
     </div>
   );
 }
-const buttonStyle = `px-3 py-1 w-full rounded-xl text-white bg-orange-400	cursor-pointer`
+const buttonStyle = `px-3 py-1 w-full rounded-xl text-white bg-orange-400	cursor-pointer hover:bg-orange-600`
 
 const selector = (id: string) => (store: RFState) => ({
   setData: (data: FilterBlockData) => store.updateNode(id, data),
