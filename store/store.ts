@@ -236,18 +236,17 @@ export const useStore = create<RFState>((set, get) => ({
 
         switch (connectedNode?.type) {
           case 'filter': {
-            set({
-              nodes: get().nodes.map(node =>
-                node.id === connectedNode.id
-                  ? { ...node, data: { column: null, selectedColumn: null, condition: null, datasource: null, fileData:null } }
-                  : node
-              ),
-              // edges: addEdge(connection, get().edges),
-            });
-            // this.updateNode(connectedNode.id, { column: newColums, selectedColumn: null, condition: null })
+            get().updateNode(connectedNode.id,{ column: null, selectedColumn: null, condition: null, datasource: undefined, fileData:null })
+            // set({
+            //   nodes: get().nodes.map(node =>
+            //     node.id === connectedNode.id
+            //       ? { ...node, data: { column: null, selectedColumn: null, condition: null, datasource: null, fileData:null } }
+            //       : node
+            //   )
+            // });
           }
         }
-        console.log("targetEdges-onConnect ", connectedNode)
+        console.log("targetEdges-onEdgesChange ", connectedNode)
         break;
       }
     }
