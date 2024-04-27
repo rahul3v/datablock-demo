@@ -315,14 +315,14 @@ export const useStore = create<RFState>((set, get) => ({
                 }
               })
 
-              // this.updateNode(connectedNode.id, { column: newColums, selectedColumn: null, condition: null })
-              set({
-                nodes: get().nodes.map(node =>
-                  node.id === connectedNode.id
-                    ? { ...node, data: { column: newColums, selectedColumn: newColums.length ? newColums[0]?.value : null, condition: null, datasource: dataset } }
-                    : node
-                )
-              })
+              get().updateNode(connectedNode.id, { column: newColums, selectedColumn: null, condition: null, datasource: dataset, fileData:null })
+              // set({
+              //   nodes: get().nodes.map(node =>
+              //     node.id === connectedNode.id
+              //       ? { ...node, data: { column: newColums, selectedColumn: newColums.length ? newColums[0]?.value : null, condition: null, datasource: dataset, fileData:null } }
+              //       : node
+              //   )
+              // })
             }
           }
         })
