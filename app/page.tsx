@@ -99,8 +99,23 @@ const OverviewFlow = () => {
                 Add Example
               </button>
             </Panel>
-            <Panel position="bottom-left" className={'space-x-4 translate-x-12'} >
+            <Panel position="bottom-left" className={'space-x-4 translate-x-12 flex gap-2'} >
               <HistoryUi />
+              <div className='flex gap-2 rounded-xl text-[.75rem] items-center bg-[#312b8b] px-4 py-1 cursor-help'>
+                <div>Connection:</div>
+                <div className='flex gap-1 items-center' title='Connection Full'>
+                  <div className='rounded w-[.75rem] h-[.75rem] bg-[#6a55dd]'></div>
+                  <div>Full</div>
+                </div>
+                <div className='flex gap-1 items-center' title='Connection Valid'>
+                  <div className='rounded w-[.75rem] h-[.75rem] bg-[#55dd99]'></div>
+                  <div>Valid</div>
+                </div>
+                <div className='flex gap-1 items-center' title='Connection inValid'>
+                  <div className='rounded w-[.75rem] h-[.75rem] bg-[#ff6060]'></div>
+                  <div>Invalid</div>
+                </div>
+              </div>
             </Panel>
             <MiniMap style={minimapStyle} zoomable pannable />
             <Controls />
