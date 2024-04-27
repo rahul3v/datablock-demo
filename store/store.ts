@@ -226,30 +226,23 @@ export const useStore = create<RFState>((set, get) => ({
           // console.log('idddEdge', edgeConnection)
           const id = edgeConnection.source
           const targetNode = get().nodes.find(node => node.id == id)
-          
-          //source
-    switch (targetNode?.type) {
-      case "exampledata":
-      case "filter":
-      case 'filepicker': {
-        const connectedNode = get().nodes.find(node => node.id == edgeConnection.target)
 
-        switch (connectedNode?.type) {
-          case 'filter': {
-            get().updateNode(connectedNode.id,{ column: null, selectedColumn: null, condition: null, datasource: undefined, fileData:null })
-            // set({
-            //   nodes: get().nodes.map(node =>
-            //     node.id === connectedNode.id
-            //       ? { ...node, data: { column: null, selectedColumn: null, condition: null, datasource: null, fileData:null } }
-            //       : node
-            //   )
-            // });
+          //source
+          switch (targetNode?.type) {
+            case "exampledata":
+            case "filter":
+            case 'filepicker': {
+              const connectedNode = get().nodes.find(node => node.id == edgeConnection.target)
+
+              switch (connectedNode?.type) {
+                case 'filter': {
+                  get().updateNode(connectedNode.id, { column: null, selectedColumn: null, condition: null, datasource: undefined, fileData: null })
+                }
+              }
+              console.log("targetEdges-onEdgesChange ", connectedNode)
+              break;
+            }
           }
-        }
-        console.log("targetEdges-onEdgesChange ", connectedNode)
-        break;
-      }
-    }
         }
 
       }
@@ -315,14 +308,7 @@ export const useStore = create<RFState>((set, get) => ({
                 }
               })
 
-              get().updateNode(connectedNode.id, { column: newColums, selectedColumn: null, condition: null, datasource: dataset, fileData:null })
-              // set({
-              //   nodes: get().nodes.map(node =>
-              //     node.id === connectedNode.id
-              //       ? { ...node, data: { column: newColums, selectedColumn: newColums.length ? newColums[0]?.value : null, condition: null, datasource: dataset, fileData:null } }
-              //       : node
-              //   )
-              // })
+              get().updateNode(connectedNode.id, { column: newColums, selectedColumn: null, condition: null, datasource: dataset, fileData: null })
             }
           }
         })

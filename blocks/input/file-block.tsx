@@ -36,14 +36,15 @@ function FileBlock({ id }: { id: string }) {
             if (ev.target?.result) {
               const data = ev.target.result
               let obj = null
-              if (file.type === "application/json") {
-                obj = JSON.parse(String(data));
-                // console.log('data', obj)
-              }
+              
+                if (file.type === "application/json") {
+                  obj = JSON.parse(String(data));
+                  // console.log('data', obj)
+                }
 
-              if (file.type === "text/csv" || file.type === "application/vnd.ms-excel") {
-                obj = CsvFileDataToJsonFormat(String(data))
-              }
+                if (file.type === "text/csv" || file.type === "application/vnd.ms-excel") {
+                  obj = CsvFileDataToJsonFormat(String(data))
+                }
               try {
                 if (ref.current) {
                   // ref.current.style.display = 'block !important'
